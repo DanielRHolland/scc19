@@ -1,0 +1,9 @@
+Welcome to the SC3 (Service-Centred and Cloud Computing) module. The module combines the Computing and management aspects of large-scale computing that requires large resources (e.g. Cloud infrastructures) to handle large information (e.g. Big Data).
+While technically and intellectually challenging, I hope the module proves rewarding both in terms of acquired knowledge and accumulated portfolio of skills that should boost your CV.
+Please visit the Content area for a more detailed overview of the module and to broadly familiarise with its organisation (lectures, labs, sample code, papers, etc.).
+Taha Osman - The module leader 
+---
+From the module spec:
+"This module covers two challenging aspects of implementing distributed computing systems in Service-Oriented Architectures (SOA). 
+The first relates to the theory, practice, and advanced techniques for integrating large-scale distributed applications and offering them as software services that are hosted in internal computing resources and/or externally in Cloud computing infrastructures. 
+The second relates to the opportunities and challenges of cost-effective deployment and management of software services in private, public and hybrid computing Clouds."

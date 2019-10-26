@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://xml.netbeans.org/schema/books"
+    xmlns:tns="http://xml.netbeans.org/schema/books"
+    elementFormDefault="qualified">
+    <xsd:element name="book">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Title" type="xsd:string"/>
+                <xsd:element name="Author" type="xsd:string"/>
+                <xsd:element name="Publisher" type="xsd:string"/>
+                <xsd:element name="Description" type="xsd:string"/>
+                <xsd:element name="Price" type="xsd:float"/>
+            </xsd:sequence>
+            <xsd:attribute name="ISBN" type="xsd:int"/>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

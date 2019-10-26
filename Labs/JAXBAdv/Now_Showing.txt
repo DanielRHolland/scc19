@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Showing_Today xmlns="http://xml.netbeans.org/schema/Shows">
+    <movie_collection>
+        <Title>Red</Title>
+        <Director>Robert Schwentke</Director>
+        <Year>2010</Year>
+    </movie_collection>
+    <movie_collection>
+        <Title>Kramer vs Kramer</Title>
+        <Director>Robert Benton</Director>
+        <Year>1979</Year>
+    </movie_collection>
+    <movie_collection>
+        <Title>La Femme Nikita</Title>
+        <Director>Luc Besson</Director>
+        <Year>1997</Year>
+    </movie_collection>
+    <movie_collection>
+        <Title>Feast of love</Title>
+        <Director>Robert Benton</Director>
+        <Year>2007</Year>
+    </movie_collection>
+</Showing_Today>
