@@ -1,8 +1,5 @@
 package uk.co.danrh.scc.dal
 
-import java.text.SimpleDateFormat
-import java.util.Date
-
 import uk.co.danrh.scc.datatypes.ResponseCode.ResponseCode
 import uk.co.danrh.scc.datatypes.{ResponseCode, Share, SharePrice}
 
@@ -10,9 +7,6 @@ import uk.co.danrh.scc.datatypes.{ResponseCode, Share, SharePrice}
 trait SharesDalMock extends SharesDal {
   private val sharePrice = SharePrice("GBP",1000)
   private val d = 1574793014
-
-  //  var A:Map[Char,Int] = Map()
-
 
   var shares = List(
     Share(sharePrice,"Company 1", "CY1",1000,d),

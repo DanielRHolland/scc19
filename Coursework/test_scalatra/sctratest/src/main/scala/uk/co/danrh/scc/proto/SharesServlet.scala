@@ -4,7 +4,6 @@ import org.scalatra._
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.json._
 import uk.co.danrh.scc.bl.SharesBl
-import uk.co.danrh.scc.datatypes.ResponseCode.ResponseCode
 import uk.co.danrh.scc.datatypes.{ResponseCode, Share}
 
 class SharesServlet extends ScalatraServlet with JacksonJsonSupport{
@@ -24,13 +23,6 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport{
       case ResponseCode.Updated => halt(status = 200, body = "Success. Updated: " + share.companySymbol)
     }
   }
-
-//  put("/:id") {
-//    val share: Share = parsedBody.extract[Share]
-//    println(share.sharePrice.currency)
-//    println(share.companySymbol)
-//    halt(status = 201, body = "Success. Updated: " + share.companySymbol)
-//  }
 
   get("/:id") {
     SharesBl.getShare(params("id"))

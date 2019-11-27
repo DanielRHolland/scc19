@@ -14,24 +14,19 @@ import scala.slick.jdbc.PositionedResultIterator
 
 trait SharesDalSqlite extends SharesDal {
 
-
-
   override def getShares(number: Int): List[Share] = {
     def rowsRec(num:Int, itr: PositionedResultIterator[SharesRow]): List[Share] =
       if (num>0 && itr.hasNext) convertRowToShare(itr.next())::rowsRec(num-1, itr) else Nil
     db.withDynSession(shares.results(number).map(r => rowsRec(number,r)).right.get)
   }
 
-
   override def getShare(id: String): Share = convertRowToShare(db.withDynSession(
     shares.filter(_.companySymbol===id).first))
-
-  private def convertRowToShare(row:SharesRow) =
-    Share(SharePrice(row._5,row._6), row._2, row._1, row._3, row._4)
 
   val db: SQLiteDriver.backend.DatabaseDef = Database.forURL(
       "jdbc:sqlite:shares.db",
       driver = "org.sqlite.JDBC")
+
   override def createShare(share: Share): ResponseCode = {
     db withDynSession {
       shares.insert(
