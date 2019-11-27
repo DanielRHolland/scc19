@@ -7,5 +7,5 @@ case class Share(
   companyName: String,
   companySymbol: String,
   numberOfSharesAvailable: Int,
-  lastUpdate: Date
+  lastUpdate: Long
 )

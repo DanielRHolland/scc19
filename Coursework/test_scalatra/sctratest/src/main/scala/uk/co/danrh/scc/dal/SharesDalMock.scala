@@ -8,9 +8,8 @@ import uk.co.danrh.scc.datatypes.{ResponseCode, Share, SharePrice}
 
 
 trait SharesDalMock extends SharesDal {
-  val sharePrice = SharePrice("GBP",1000)
-  val sdf = new SimpleDateFormat("dd/MM/yyyy")
-  val d: Date = sdf.parse("21/12/2012")
+  private val sharePrice = SharePrice("GBP",1000)
+  private val d = 1574793014
 
   //  var A:Map[Char,Int] = Map()
 

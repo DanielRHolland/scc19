@@ -3,15 +3,17 @@ package uk.co.danrh.scc.dal
 import scala.slick.driver.SQLiteDriver.simple._
 import scala.slick.lifted.ProvenShape
 object Tables {
-  class Shares(tag: Tag) extends Table[(String,String,Int,String,String,Double)](tag, "shares"){
+  type SharesRow = (String, String, Int, Long, String, Double)
+
+  class Shares(tag: Tag) extends Table[SharesRow](tag, "shares"){
     def companySymbol: Column[String] = column[String]("company_symbol",O.PrimaryKey)
     def companyName: Column[String] = column[String]("company_name")
     def sharesAvailable: Column[Int] = column[Int]("shares_available")
-    def lastUpdate: Column[String] = column[String]("last_update")
+    def lastUpdate: Column[Long] = column[Long]("last_update")
     def currency: Column[String] = column[String]("currency")
     def value: Column[Double] = column[Double]("value")
 
-    override def * : ProvenShape[(String, String, Int, String, String, Double)] = (
+    override def * : ProvenShape[SharesRow] = (
       companySymbol,companyName,sharesAvailable,lastUpdate,currency,value)
   }
   val shares: TableQuery[Shares] = TableQuery[Shares]
