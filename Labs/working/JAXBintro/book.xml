@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<book xmlns="http://xml.netbeans.org/schema/books" ISBN="2147483647">
-    <Title>Jim's Book's Title</Title>
-    <Author>Jim</Author>
-    <Publisher>Jim's Publisher</Publisher>
-    <Description>Woop woop</Description>
-    <Price>3.4028235E38</Price>
-</book>
