@@ -1,0 +1,1 @@
+/snap/intellij-idea-ultimate/181/jbr/bin/java -agentlib:jdwp=transport=dt_socket,address=localhost:36765,suspend=n,server=y -Xdebug -server -Xmx1536M -Dsbt.supershell=false -Didea.managed=true -Dfile.encoding=UTF-8 -jar /home/dan/.IntelliJIdea2019.2/config/plugins/Scala/launcher/sbt-launch.jar --addPluginSbtFile=/tmp/idea.sbt "; set ideaPort in Global := 32825 ; idea-shell"

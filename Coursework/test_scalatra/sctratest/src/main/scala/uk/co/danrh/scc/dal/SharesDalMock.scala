@@ -20,7 +20,7 @@ trait SharesDalMock extends SharesDal {
     if (number== -1 || number>=shares.length) shares
     else shares.slice(0, number)
   override def getShare(id:String): Share = getShares(-1).find(s => s.companySymbol == id).get
-  override def createShare(share: Share): ResponseCode = {
+  override def insertOrUpdateShare(share: Share): ResponseCode = {
     shares = share :: shares
     ResponseCode.Created
   }

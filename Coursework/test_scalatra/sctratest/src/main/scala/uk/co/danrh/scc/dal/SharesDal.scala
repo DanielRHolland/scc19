@@ -6,7 +6,7 @@ import uk.co.danrh.scc.datatypes.{ResponseCode, Share, SharePrice}
 trait SharesDal {
   def getShare(id:String): Share
   def getShares(number: Int): List[Share]
-  def createShare(share: Share): ResponseCode
+  def insertOrUpdateShare(share: Share): ResponseCode
 }
 
 object SharesDal extends SharesDalSqlite

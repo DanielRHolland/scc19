@@ -4,7 +4,7 @@ import java.time.Instant
 
 import Tables._
 import uk.co.danrh.scc.datatypes.ResponseCode.ResponseCode
-import uk.co.danrh.scc.datatypes.{ResponseCode, Share, SharePrice}
+import uk.co.danrh.scc.datatypes.{ResponseCode, Share}
 
 import scala.collection.immutable.Nil
 import scala.slick.driver.SQLiteDriver
@@ -27,9 +27,9 @@ trait SharesDalSqlite extends SharesDal {
       "jdbc:sqlite:shares.db",
       driver = "org.sqlite.JDBC")
 
-  override def createShare(share: Share): ResponseCode = {
+  override def insertOrUpdateShare(share: Share): ResponseCode = {
     db withDynSession {
-      shares.insert(
+      shares.insertOrUpdate(
         share.companySymbol,
         share.companyName,
         share.numberOfSharesAvailable,

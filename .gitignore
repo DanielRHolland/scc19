@@ -24,3 +24,14 @@ hs_err_pid*
 
 *.bin
 *.lock
+
+
+# node modules
+*node_modules*
+*.next*
+
+# target
+**/target/**
+**/build/**
+
+**/.idea/**

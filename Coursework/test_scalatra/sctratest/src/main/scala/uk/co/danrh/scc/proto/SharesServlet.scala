@@ -6,7 +6,11 @@ import org.scalatra.json._
 import uk.co.danrh.scc.bl.SharesBl
 import uk.co.danrh.scc.datatypes.{ResponseCode, Share}
 
-class SharesServlet extends ScalatraServlet with JacksonJsonSupport{
+class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSupport {
+
+  options("/*"){
+    response.setHeader("Access-Control-Allow-Origin", "true")//request.getHeader("Origin"))
+  }
 
   protected implicit lazy val jsonFormats: Formats = DefaultFormats
 
