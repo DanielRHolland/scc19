@@ -22,3 +22,27 @@ function createCORSRequest(method, url) {
   }
   return xhr;
 }
+
+
+var xhr = createCORSRequest('GET', 'http://localhost:8080/share/list');
+	console.log('CORS Created');
+	if (!xhr) {
+	  throw new Error('CORS not supported');
+	}
+
+   
+   xhr.onload = function() {
+    var responseText = xhr.responseText;
+    console.log(responseText);
+    document.getElementById("p1").innerHTML = responseText;
+
+   };
+   
+   xhr.onerror = function() {
+     console.log('There was an error!');
+   };
+
+   
+   console.log('1')
+
+   xhr.send();

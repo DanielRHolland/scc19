@@ -1,39 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <meta charset="utf-8">
+<link rel="stylesheet" href="stylesheet.css">
     <title>Page Title</title>
    
   </head>
   <body>
-    <!-- Content -->
-    <p id="p1">Hello World! def</p>
-	
+    <!--<p id="p1">Hello World! def</p>-->
+<form action="/" id="searchForm">
+  <input type="text" name="s" placeholder="Search...">
+  <input type="submit" value="Search">
+</form>
+  <table id="sharesTable" style="width:100%">
+  <tr>
+    <th>Symbol</th>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Shares Available</th>
+    <th>Last Update</th>
+  </tr>
+    </table>
+  
   </body>
-   <script src="script.js"></script>
-   <script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <!--<script src="script.js"></script>-->
+   <script src="render.js"></script>
+<script>
+const origin = "http://localhost:8080"
+$.getJSON( origin+"/share/list/100", function( json ) {
+  console.log( "JSON Data: " + json[ 3 ].companyName );
+  json.forEach(share => addShare(share));
+ });
 
-	var xhr = createCORSRequest('GET', 'http://localhost:8080/share/list');
-	console.log('CORS Created');
-	if (!xhr) {
-	  throw new Error('CORS not supported');
-	}
+$( "#searchForm" ).submit(function( event ) {
+    event.preventDefault();
 
-   
-   xhr.onload = function() {
-    var responseText = xhr.responseText;
-    console.log(responseText);
-    document.getElementById("p1").innerHTML = responseText[1];
-   };
-   
-   xhr.onerror = function() {
-     console.log('There was an error!');
-   };
+    var $form = $( this ),
+        term = $form.find( "input[name='s']" ).val(),
+        url = origin+"/share/";
+     
+var share = {"sharePrice":{"currency":"GBP","value":20.0},"companyName":"New Company 4","companySymbol":term,"numberOfSharesAvailable":500,"lastUpdate":0};
 
-   
-   console.log('1')
+var shareStr = JSON.stringify(share);
+console.log(shareStr);
 
-   xhr.send();
-   </script>
+  //  $.post( url, shareStr,()=>console.log('Share Created'),"application/json" );
+//
+
+
+$.ajax(url, {
+    data : JSON.stringify(share),
+    contentType : 'application/json',
+    type : 'POST'
+});
+
+addShare(share);
+
+});
+</script>
+
 </html>
 
