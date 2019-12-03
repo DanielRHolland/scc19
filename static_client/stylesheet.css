@@ -20,3 +20,7 @@
   background-color: #0066ff;
   color: white;
 }
+
+#newShareForm {
+  display: flex;
+}

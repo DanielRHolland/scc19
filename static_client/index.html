@@ -10,17 +10,31 @@
   <body>
     <!--<p id="p1">Hello World! def</p>-->
 <form action="/" id="searchForm">
-  <input type="text" name="s" placeholder="Search...">
+  <input type="text" name="s">
   <input type="submit" value="Search">
 </form>
   <table id="sharesTable" style="width:100%">
-  <tr>
+<thead>  
+<tr>
     <th>Symbol</th>
     <th>Name</th>
     <th>Price</th>
     <th>Shares Available</th>
     <th>Last Update</th>
   </tr>
+</thead>
+<tbody></tbody>
+<tfoot>
+<form action="/" id="newShareForm">
+  <td><input type="text" id="symbolField" placeholder="Symbol"></td>
+  <td><input type="text" id="nameField" placeholder="Name"></td>
+    <td><input type="text" id="valueField" placeholder="Price">
+<select id="currencyField">    </select>
+  </td>
+  <td><input type="text" id="availableField" placeholder="Shares Available"></td>
+  <td><input type="submit" value="Add new share"></td>
+</form>
+</tfoot>
     </table>
   
   </body>
@@ -28,36 +42,47 @@
    <!--<script src="script.js"></script>-->
    <script src="render.js"></script>
 <script>
-const origin = "http://localhost:8080"
+
 $.getJSON( origin+"/share/list/100", function( json ) {
   console.log( "JSON Data: " + json[ 3 ].companyName );
   json.forEach(share => addShare(share));
  });
 
-$( "#searchForm" ).submit(function( event ) {
+$.getJSON( origin+"/share/currencies", function( json ) {
+  json.forEach(currency => {
+
+//$( "#newShareForm" ).find( "select[name='c']" )
+$("#currencyField").append($('<option>', {
+    value: currency,
+    text: currency
+}));
+}
+);
+
+
+
+ });
+
+
+//newShareForm
+$( "#newShareForm" ).submit(function( event ) {
     event.preventDefault();
 
-    var $form = $( this ),
-        term = $form.find( "input[name='s']" ).val(),
+    var sym = $("#symbolField").val(),
+        name = $("#nameField").val(),
+        currency = $("#currencyField").val(),
+        price = $("#valueField").val(),
+        available = $("#availableField").val(),
         url = origin+"/share/";
      
-var share = {"sharePrice":{"currency":"GBP","value":20.0},"companyName":"New Company 4","companySymbol":term,"numberOfSharesAvailable":500,"lastUpdate":0};
-
-var shareStr = JSON.stringify(share);
-console.log(shareStr);
-
-  //  $.post( url, shareStr,()=>console.log('Share Created'),"application/json" );
-//
-
-
+var share = {"sharePrice":{"currency":currency,"value":parseFloat(price)},"companyName":name,"companySymbol":sym,"numberOfSharesAvailable":parseInt(available),"lastUpdate":-1};
 $.ajax(url, {
     data : JSON.stringify(share),
     contentType : 'application/json',
-    type : 'POST'
+    type : 'POST',
+    success: addShare(share)
 });
-
-addShare(share);
-
+this.reset();
 });
 </script>
 

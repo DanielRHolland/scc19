@@ -40,6 +40,10 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
     SharesBl.getShares(params("number").toInt)
   }
 
+  get("/currencies") {
+    SharesBl.getCurrencies()
+  }
+
   notFound {
     contentType = formats("html")
     <h1>404 Share Resource Not found.</h1>

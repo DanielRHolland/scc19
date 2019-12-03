@@ -8,5 +8,6 @@ trait SharesBl {
   def getShare(id: String): Share = SharesDal.getShare(id)
   def getShares(number: Int): List[Share] = SharesDal.getShares(number)
   def createShare(share: Share): ResponseCode = SharesDal.insertOrUpdateShare(share)
+  def getCurrencies(): List[String] = "GBP" :: "USD" :: "EUR" :: Nil
 }
 object SharesBl extends SharesBl
