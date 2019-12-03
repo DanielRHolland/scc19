@@ -37,22 +37,12 @@ trait SharesDalSqlite extends SharesDal {
         share.sharePrice.currency,
         share.sharePrice.value)
     }
-//    db withDynSession {//todo find more elegant solution
-//      if (getShare(share.companySymbol)!=null) ResponseCode.Created else ResponseCode.Failed
-//    }
   ResponseCode.Created
   }
 
 
   override def searchShares(number: Int, searchterms: Seq[String]): List[Share] = {
-    println("=============")
-    searchterms.foreach(println(_))
-    println(number)
-
-    val default = LiteralColumn(1) === LiteralColumn(1)
-
     db.withDynSession(shares
-
     .filter( _.companyName like "%"+searchterms.head+"%")
       .results(number).map(r => convRowsToSharesRec(number,r)).right.get)
   }

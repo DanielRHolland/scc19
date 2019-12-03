@@ -37,6 +37,11 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
     SharesBl.getShares(10)
   }
 
+  get("/convert/:c1/:c2") {
+    SharesBl.getConversionRate(params("c1"),params("c2"))
+  }
+
+
   get("/list/:number") {
     val searchterms = multiParams("st")
     if (searchterms.isEmpty) {

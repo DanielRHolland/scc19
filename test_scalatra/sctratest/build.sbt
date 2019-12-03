@@ -21,7 +21,8 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.3-1100-jdbc4",
   "com.typesafe.slick" %% "slick" % "2.1.0",
   "org.slf4j" % "slf4j-nop" % "1.6.4",
-  "org.xerial" % "sqlite-jdbc" % "3.28.0"
+  "org.xerial" % "sqlite-jdbc" % "3.28.0",
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.10.1"
 )
 
 enablePlugins(SbtTwirl)
