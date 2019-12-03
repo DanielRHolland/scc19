@@ -18,13 +18,14 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
     contentType = formats("json")
   }
 
+  case class stat(stat:String)
   post("/") {
     val share: Share = parsedBody.extract[Share]
     val responseCode = SharesBl.createShare(share)
     responseCode match {
-      case ResponseCode.Failed => halt(status = 404, body = "Failed")
-      case ResponseCode.Created => halt(status = 201, body = "Success. Created: " + share.companySymbol)
-      case ResponseCode.Updated => halt(status = 200, body = "Success. Updated: " + share.companySymbol)
+      case ResponseCode.Failed => halt(status = 404, body = stat("Failed"))
+      case ResponseCode.Created => halt(status = 201, body = stat("Success. Created: " + share.companySymbol))
+      case ResponseCode.Updated => halt(status = 200, body = stat("Success. Updated: " + share.companySymbol))
     }
   }
 

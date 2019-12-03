@@ -37,7 +37,10 @@ trait SharesDalSqlite extends SharesDal {
         share.sharePrice.currency,
         share.sharePrice.value)
     }
-    ResponseCode.Created
+//    db withDynSession {//todo find more elegant solution
+//      if (getShare(share.companySymbol)!=null) ResponseCode.Created else ResponseCode.Failed
+//    }
+  ResponseCode.Created
   }
 
 
