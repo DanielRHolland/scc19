@@ -4,14 +4,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <meta charset="utf-8">
 <link rel="stylesheet" href="stylesheet.css">
-    <title>Page Title</title>
+    <title>Shares Manager</title>
    
   </head>
   <body>
     <!--<p id="p1">Hello World! def</p>-->
 <form action="/" id="searchForm">
-  <input type="text" name="s">
+  <input type="text" id="searchField">
   <input type="submit" value="Search">
+  <select id="numResultsField">
+<option value ="25">25</option>
+<option value ="50" selected="selected"> 50</option>
+<option value ="100">100</option>
+<option value ="200">200</option>
+</select>
 </form>
   <table id="sharesTable" style="width:100%">
 <thead>  
@@ -43,13 +49,13 @@
    <script src="render.js"></script>
 <script>
 
-$.getJSON( origin+"/share/list/100", function( json ) {
-  console.log( "JSON Data: " + json[ 3 ].companyName );
+$.getJSON( origin+"/share/list/" + $("#numResultsField").val() , function( json ) {
   json.forEach(share => addShare(share));
  });
 
 $.getJSON( origin+"/share/currencies", function( json ) {
   json.forEach(currency => {
+
 
 //$( "#newShareForm" ).find( "select[name='c']" )
 $("#currencyField").append($('<option>', {
@@ -62,6 +68,17 @@ $("#currencyField").append($('<option>', {
 
 
  });
+
+$( "#searchForm" ).submit(function( event ) {
+event.preventDefault();
+
+$.getJSON( origin+"/share/list/" + $("#numResultsField").val() +"?&st="+ $("#searchField").val() , function( json ) {
+  $("#sharesTable tbody").empty();
+  json.forEach(share => addShare(share));
+ });
+});
+
+
 
 
 //newShareForm
