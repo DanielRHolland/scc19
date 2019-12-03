@@ -3,109 +3,58 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <meta charset="utf-8">
-<link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="stylesheet.css">
     <title>Shares Manager</title>
-   
   </head>
   <body>
     <!--<p id="p1">Hello World! def</p>-->
-<div id="alertPane"></div>
-<form action="/" id="searchForm">
-  <input type="text" id="searchField">
-  <input type="submit" value="Search">
-  <select id="numResultsField">
-<option value ="1">1</option>
-<option value ="5">5</option>
-<option value ="10">10</option>
-<option value ="25" selected="selected">25</option>
-<option value ="50"> 50</option>
-<option value ="100">100</option>
-<option value ="200">200</option>
-</select>
-</form>
-  <table id="sharesTable" style="width:100%">
-<thead>  
-<tr>
-    <th>Symbol</th>
-    <th>Name</th>
-    <th>Price</th>
-    <th>Shares Available</th>
-    <th>Last Update</th>
-  </tr>
-</thead>
-<tbody></tbody>
-<tfoot>
-<form action="/" id="newShareForm">
-  <td><input type="text" id="symbolField" placeholder="Symbol"></td>
-  <td><input type="text" id="nameField" placeholder="Name"></td>
-    <td><input type="text" id="valueField" placeholder="Price">
-<select id="currencyField">    </select>
-  </td>
-  <td><input type="text" id="availableField" placeholder="Shares Available"></td>
-  <td><input type="submit" value="Add new share"></td>
-</form>
-</tfoot>
+    <div id="alertPane"></div>
+    <form action="/" id="searchForm">
+      <input type="text" id="searchField">
+      <input type="submit" value="Search">
+      <select id="numResultsField">
+        <option value ="1">1</option>
+        <option value ="5">5</option>
+        <option value ="10" selected="selected">10</option>
+        <option value ="25" >25</option>
+        <option value ="50"> 50</option>
+        <option value ="100">100</option>
+        <option value ="200">200</option>
+      </select>
+    </form>
+    <table id="sharesTable" style="width:100%">
+        <thead>  
+        <tr>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Shares Available</th>
+            <th>Last Update</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+        <form action="/" id="newShareForm">
+          <td><input type="text" id="symbolField" placeholder="Symbol"></td>
+          <td><input type="text" id="nameField" placeholder="Name"></td>
+          <td><input type="text" id="valueField" placeholder="Price">
+              <select id="currencyField"></select></td>
+          <td><input type="text" id="availableField" placeholder="Shares Available"></td>
+          <td><input type="submit" value="Add new share"></td>
+        </form>
+        </tfoot>
     </table>
-   
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <div id="modal-inner"><div>
+      </div>
+    </div> 
   </body>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-   <!--<script src="script.js"></script>-->
+   <script>const origin = "http://localhost:8080"</script>
+   <script src="tablecontroller.js"></script>
+   <script src="modalcontroller.js"></script>
    <script src="render.js"></script>
-<script>
-function search() {
-    $.getJSON( origin+"/share/list/" + $("#numResultsField").val() +"?&st="+ $("#searchField").val() , function( json ) {
-      $("#sharesTable tbody").empty();
-      json.forEach(share => addShare(share));
-     });
-}
-
-search();
-
-$.getJSON( origin+"/share/currencies", function( json ) {
-  json.forEach(currency => {
-$("#currencyField").append($('<option>', {
-    value: currency,
-    text: currency
-}));});});
-
-
-$( "#searchForm" ).submit(e=>{event.preventDefault();search();});
-$("#numResultsField").change(e=>search());
-
-function onShareCreation(share,textStatus) {
-    createAlert(share.companySymbol+" added");
-    addShare(share);//adds to current view
-    $( "#newShareForm" )[0].reset();
-}
-
-//newShareForm
-$( "#newShareForm" ).submit(function( event ) {
-    event.preventDefault();
-
-    var sym = $("#symbolField").val(),
-        name = $("#nameField").val(),
-        currency = $("#currencyField").val(),
-        price = $("#valueField").val(),
-        available = $("#availableField").val(),
-        url = origin+"/share/";
-     
-var share = 
-    {"sharePrice":
-        {"currency":currency,
-        "value":parseFloat(price)},
-    "companyName":name,
-    "companySymbol":sym,
-    "numberOfSharesAvailable":parseInt(available),
-    "lastUpdate":-1
-};
-$.ajax(url, {
-    data : JSON.stringify(share),
-    contentType : 'application/json',
-    type : 'POST',
-    success: (data,textStatus,jqXHR)=> onShareCreation(share,textStatus)
-});
-});
-</script>
-
 </html>
 
