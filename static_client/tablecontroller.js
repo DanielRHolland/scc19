@@ -68,7 +68,8 @@ $( "#newShareForm" ).submit(function( event ) {
 	    data : JSON.stringify(share),
 	    contentType : 'application/json',
 	    type : 'POST',
-	    success: (data,textStatus,jqXHR)=> onShareCreation(share,textStatus)
+	    success: (data,textStatus,jqXHR)=> onShareCreation(share,textStatus),
+	    error: (jqXHR, textStatus, errorThrown)=>createAlert("Failed to create share","#9e0000")
 		});
 });
 
