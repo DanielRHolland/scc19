@@ -1,3 +1,23 @@
+function addShare(share) {
+    var sym=share.companySymbol;
+  	$("#sharesTable tbody").append(
+		"<tr id="+sym+"Row>" +
+	        "<td>"+sym+"</td>" +
+	        "<td id="+sym+"Name>"+share.companyName+"</td>" +
+	        "<td>"+share.sharePrice.value + " "+share.sharePrice.currency+"</td>" +
+	        "<td>"+share.numberOfSharesAvailable+"</td>" +
+	        "<td>"+getDateTime(share.lastUpdate)+"</td>" +
+	    "</tr>"  
+	);
+    $('body').on('click', "#"+sym+"Row", ()=>openShareModal(share));
+}
+
+function getDateTime(timestamp) {
+  if (timestamp < 0) return "Just now";
+  var date = new Date(timestamp*1000);  
+  return date.toTimeString() + date.toDateString();
+}
+
 function search() {
     $.getJSON( origin+"/share/list/" + $("#numResultsField").val() +"?&st="+ $("#searchField").val() , function( json ) {
       $("#sharesTable tbody").empty();
@@ -5,49 +25,51 @@ function search() {
      });
 }
 
-search();
-
-$.getJSON( origin+"/share/currencies", function( json ) {
-  json.forEach(currency => {
-$("#currencyField").append($('<option>', {
-    value: currency,
-    text: currency
-}));});});
-
-
-$( "#searchForm" ).submit(e=>{event.preventDefault();search();});
-$("#numResultsField").change(e=>search());
-
 function onShareCreation(share,textStatus) {
     createAlert(share.companySymbol+" added");
     addShare(share);//adds to current view
     $( "#newShareForm" )[0].reset();
 }
 
+$.getJSON( origin+"/share/currencies", function( json ) {
+  json.forEach(currency => {
+	$("#currencyField").append(
+		$('<option>', {
+		    value: currency,
+		    text: currency
+	    })
+	    );
+	});
+});
+
+
+$( "#searchForm" ).submit(e=>{event.preventDefault();search();});
+$("#numResultsField").change(e=>search());
+
 //newShareForm
 $( "#newShareForm" ).submit(function( event ) {
     event.preventDefault();
+    var url = origin+"/share/";
+    
+	var share = 
+	    {	
+	    	"sharePrice":
+		        {
+			        "currency":$("#currencyField").val(),
+			        "value":parseFloat($("#valueField").val())
+		        },
+		    "companyName": $("#nameField").val(),
+		    "companySymbol": $("#symbolField").val(),
+		    "numberOfSharesAvailable":parseInt($("#availableField").val()),
+		    "lastUpdate":-1
+		};
 
-    var sym = $("#symbolField").val(),
-        name = $("#nameField").val(),
-        currency = $("#currencyField").val(),
-        price = $("#valueField").val(),
-        available = $("#availableField").val(),
-        url = origin+"/share/";
-     
-var share = 
-    {"sharePrice":
-        {"currency":currency,
-        "value":parseFloat(price)},
-    "companyName":name,
-    "companySymbol":sym,
-    "numberOfSharesAvailable":parseInt(available),
-    "lastUpdate":-1
-};
-$.ajax(url, {
-    data : JSON.stringify(share),
-    contentType : 'application/json',
-    type : 'POST',
-    success: (data,textStatus,jqXHR)=> onShareCreation(share,textStatus)
+	$.ajax(url, {
+	    data : JSON.stringify(share),
+	    contentType : 'application/json',
+	    type : 'POST',
+	    success: (data,textStatus,jqXHR)=> onShareCreation(share,textStatus)
+		});
 });
-});
+
+
