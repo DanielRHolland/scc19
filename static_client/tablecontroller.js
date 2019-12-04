@@ -2,7 +2,7 @@ function addShare(share) {
     var sym=share.companySymbol;
   	$("#sharesTable tbody").append(
 		"<tr id="+sym+"Row>" +
-	        "<td>"+sym+"</td>" +
+	        "<td class='always'>"+sym+"</td>" +
 	        "<td id="+sym+"Name>"+share.companyName+"</td>" +
 	        "<td>"+share.sharePrice.value + " "+share.sharePrice.currency+"</td>" +
 	        "<td>"+share.numberOfSharesAvailable+"</td>" +

@@ -111,4 +111,12 @@ margin-left:auto; margin-right:0;
     width: 95%;
 }
 
+@media only screen and (max-width: 900px) {
+        td:not(.always) {
+            display:none;
+       	}
 
+       	th:not(.always) {
+    	    display:none;
+       	}
+}

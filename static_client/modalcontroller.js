@@ -12,6 +12,23 @@ function openShareModal(share) {
 
 $("#closeModal").click(()=> $("#myModal").css("display","none"));
 
+function getApiKey(username, password) {
+	var hash = hashPassword(password);
+	var url = origin + "/user/?id=" + username +"&hash="+hash;
+     $.ajax(url, {
+     	    //data : JSON.stringify(share),
+     	   // contentType : 'application/json',
+     	    type : 'GET',
+     	    success: (data,textStatus,jqXHR)=> {
+     	    $("#loginModal").css("display","none");
+     	    window.apiKey = data.key;
+     	    	    search();},
+     	  //  error: (jqXHR, textStatus, errorThrown)=>createAlert("Failed to create share","#9e0000")
+     		});
+}
+
+function hashPassword(password) {return password;}//todo implement
+
 function openLoginModal() {
 	$("#login-modal-inner").html(
 		'<form id="loginForm">'+
@@ -22,9 +39,7 @@ function openLoginModal() {
 	);
 	$("#loginForm").submit(function( event ) {
 	    event.preventDefault();
-	    console.log($("#username").val()+$("#password").val());
-	    $("#loginModal").css("display","none");
-	    search();
+	    getApiKey($("#username").val(),$("#password").val());
 	});
 	$("#loginModal").css("display","block");
 }
