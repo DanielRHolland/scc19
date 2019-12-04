@@ -14,16 +14,23 @@ libraryDependencies ++= Seq(
   "org.scalatra" %% "scalatra" % ScalatraVersion,
   "org.scalatra" %% "scalatra-scalatest" % ScalatraVersion % "test",
   "org.scalatra" %% "scalatra-json" % ScalatraVersion,
-  "org.json4s"   %% "json4s-jackson" % "3.5.2",
+  "org.json4s"   %% "json4s-jackson" % "3.6.6",
   "ch.qos.logback" % "logback-classic" % "1.2.3" % "runtime",
-  "org.eclipse.jetty" % "jetty-webapp" % "9.4.19.v20190610" % "container",
+//  "org.eclipse.jetty" % "jetty-webapp" % "9.4.19.v20190610" % "container",
   "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
   "org.postgresql" % "postgresql" % "9.3-1100-jdbc4",
   "com.typesafe.slick" %% "slick" % "2.1.0",
   "org.slf4j" % "slf4j-nop" % "1.6.4",
   "org.xerial" % "sqlite-jdbc" % "3.28.0",
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.10.1"
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.10.1",
+  "org.eclipse.jetty" % "jetty-server" % "9.4.24.v20191120",
+  "org.eclipse.jetty" % "jetty-webapp" % "9.4.24.v20191120",
+  "org.eclipse.jetty" % "jetty-servlet" % "9.4.24.v20191120" % "container;compile"
 )
 
-enablePlugins(SbtTwirl)
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case x => MergeStrategy.first
+}
+
 enablePlugins(ScalatraPlugin)

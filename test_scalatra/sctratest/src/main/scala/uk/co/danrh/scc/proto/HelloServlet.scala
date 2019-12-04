@@ -4,7 +4,7 @@ import org.scalatra.ScalatraServlet
 
 class HelloServlet extends ScalatraServlet {
   get("/hello") {
-    views.html.hello()
+    <p> Hello there </p>//views.html.hello()
   }
 
   get("/hello/:name") {

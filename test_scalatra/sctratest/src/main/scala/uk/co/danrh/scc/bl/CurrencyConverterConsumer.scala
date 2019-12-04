@@ -5,7 +5,6 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 
 import scala.io.Source
-import org.json4s.{DefaultFormats, Formats, JArray}
 
 trait CurrencyConverterConsumer {
   private val origin = "http://localhost:8050/"
