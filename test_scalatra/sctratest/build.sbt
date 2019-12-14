@@ -25,7 +25,8 @@ libraryDependencies ++= Seq(
   "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.10.1",
   "org.eclipse.jetty" % "jetty-server" % "9.4.24.v20191120",
   "org.eclipse.jetty" % "jetty-webapp" % "9.4.24.v20191120",
-  "org.eclipse.jetty" % "jetty-servlet" % "9.4.24.v20191120" % "container;compile"
+  "org.eclipse.jetty" % "jetty-servlet" % "9.4.24.v20191120" % "container;compile",
+  "org.scalatra" %% "scalatra-auth" % "2.7.0-RC1"
 )
 
 assemblyMergeStrategy in assembly := {

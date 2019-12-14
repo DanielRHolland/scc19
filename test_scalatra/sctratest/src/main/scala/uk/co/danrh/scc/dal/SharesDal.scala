@@ -1,7 +1,6 @@
 package uk.co.danrh.scc.dal
 
-import uk.co.danrh.scc.datatypes.ResponseCode.ResponseCode
-import uk.co.danrh.scc.datatypes.Share
+import uk.co.danrh.scc.datatypes.{ResponseCode, Share}
 
 trait SharesDal {
   def getShare(id:String): Share

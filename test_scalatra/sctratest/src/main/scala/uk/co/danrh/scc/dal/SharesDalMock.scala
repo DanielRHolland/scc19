@@ -1,6 +1,4 @@
 package uk.co.danrh.scc.dal
-
-import uk.co.danrh.scc.datatypes.ResponseCode.ResponseCode
 import uk.co.danrh.scc.datatypes.{ResponseCode, Share, SharePrice}
 
 
@@ -22,6 +20,6 @@ trait SharesDalMock extends SharesDal {
   override def getShare(id:String): Share = getShares(-1).find(s => s.companySymbol == id).get
   override def insertOrUpdateShare(share: Share): ResponseCode = {
     shares = share :: shares
-    ResponseCode.Created
+    ResponseCode.Created()
   }
 }

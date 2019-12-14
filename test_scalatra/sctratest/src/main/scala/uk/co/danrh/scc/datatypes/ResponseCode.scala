@@ -1,10 +1,9 @@
 package uk.co.danrh.scc.datatypes
 
-import uk.co.danrh.scc.datatypes
+sealed abstract class ResponseCode extends Product with Serializable
 
-object ResponseCode extends Enumeration {
-  type ResponseCode = Value
-  val Created: datatypes.ResponseCode.Value = Value("Created")
-  val Updated: datatypes.ResponseCode.Value = Value("Updated")
-  val Failed: datatypes.ResponseCode.Value = Value("Failed")
+object ResponseCode  {
+  final case class Created(msg:String = "Created") extends ResponseCode
+  final case class Failed(msg:String = "Failed") extends ResponseCode
+  final case class Updated(msg:String = "Updated") extends ResponseCode
 }

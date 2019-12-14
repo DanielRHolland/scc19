@@ -3,8 +3,8 @@ package uk.co.danrh.scc.proto
 import org.scalatra._
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.json._
-import uk.co.danrh.scc.bl.SharesBl
-import uk.co.danrh.scc.datatypes.{ResponseCode, Share}
+import uk.co.danrh.scc.bl.{ApiKeyBl, SharesBl}
+import uk.co.danrh.scc.datatypes.{ApiKey, ResponseCode, Share}
 
 class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSupport {
 
@@ -14,18 +14,21 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
 
   protected implicit lazy val jsonFormats: Formats = DefaultFormats
 
+
   before() {
     contentType = formats("json")
+    val key = multiParams("key")
+    if (key.isEmpty || !ApiKeyBl.checkKeyValid(ApiKey(key.head))) halt(status= 401)
   }
 
-  case class stat(stat:String)
+
   post("/") {
     val share: Share = parsedBody.extract[Share]
     val responseCode = SharesBl.createShare(share)
     responseCode match {
-      case ResponseCode.Failed => halt(status = 404, body = stat("Failed"))
-      case ResponseCode.Created => halt(status = 201, body = stat("Success. Created: " + share.companySymbol))
-      case ResponseCode.Updated => halt(status = 200, body = stat("Success. Updated: " + share.companySymbol))
+      case ResponseCode.Failed(msg) => halt(status = 404, body = responseCode)
+      case ResponseCode.Created(msg) => halt(status = 201, body = responseCode)
+      case ResponseCode.Updated(msg) => halt(status = 200, body = responseCode)
     }
   }
 
@@ -51,7 +54,7 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
     }
   }
 
-  get("/currencies") {
+  get("/currencies/?") {
     SharesBl.getCurrencies()
   }
 
