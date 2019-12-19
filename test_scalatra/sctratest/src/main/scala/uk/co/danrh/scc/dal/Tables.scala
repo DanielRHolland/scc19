@@ -41,4 +41,16 @@ object Tables {
   def convertRowToUser(row: UsersRow): User = User(row._1, row._2)
 
   val users: TableQuery[Users] = TableQuery[Users]
+
+  type UserSharesRow = (String, String, Int)
+  class UserShares(tag: Tag) extends Table[UserSharesRow](tag, "usershares"){
+    def userId: Column[String] = column[String]("user_id")
+    def companySymbol: Column[String] = column[String]("company_symbol",O.PrimaryKey)
+    def quantity: Column[Int] = column[Int]("quantity")
+
+    override def * : ProvenShape[UserSharesRow] = (userId, companySymbol, quantity)
+  }
+
+  val userShares: TableQuery[UserShares] = TableQuery[UserShares]
+
 }
