@@ -1,3 +1,5 @@
+window.apiKey = ""
+
 function addShare(share) {
     var sym=share.companySymbol;
   	$("#sharesTable tbody").append(
@@ -19,10 +21,12 @@ function getDateTime(timestamp) {
 }
 
 function search() {
-    $.getJSON( origin+"/share/list/" + $("#numResultsField").val() +"?&st="+ $("#searchField").val() , function( json ) {
-      $("#sharesTable tbody").empty();
-      json.forEach(share => addShare(share));
-     });
+console.log("search start")
+	$.ajax({
+	  url: origin+"/share/list/" + $("#numResultsField").val() +"?&st="+ $("#searchField").val() + "&key="+window.apiKey,
+	  type : 'GET',
+	  success: (data,textStatus,jqXHR)=> {$("#sharesTable tbody").empty();data.forEach(share => addShare(share));loadCurrencyCodes();}
+	});
 }
 
 function onShareCreation(share,textStatus) {
@@ -31,17 +35,21 @@ function onShareCreation(share,textStatus) {
     $( "#newShareForm" )[0].reset();
 }
 
-$.getJSON( origin+"/share/currencies", function( json ) {
-  json.forEach(currency => {
-	$("#currencyField").append(
-		$('<option>', {
-		    value: currency,
-		    text: currency
-	    })
-	    );
-	});
-});
 
+function loadCurrencyCodes() {
+$.ajax({
+	  url: origin+"/share/currencies/"+ "?&key="+window.apiKey,
+	  type : 'GET',
+	  success: (data,textStatus,jqXHR)=> {data.forEach(currency => {
+	  	$("#currencyField").append(
+	  		$('<option>', {
+	  		    value: currency,
+	  		    text: currency
+	  	    })
+	  	    );
+	  	});}
+	});
+}
 
 $( "#searchForm" ).submit(e=>{event.preventDefault();search();});
 $("#numResultsField").change(e=>search());
@@ -49,7 +57,7 @@ $("#numResultsField").change(e=>search());
 //newShareForm
 $( "#newShareForm" ).submit(function( event ) {
     event.preventDefault();
-    var url = origin+"/share/";
+    var url = origin+"/share/"+ "?&key="+window.apiKey;
     
 	var share = 
 	    {	

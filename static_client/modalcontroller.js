@@ -14,10 +14,8 @@ $("#closeModal").click(()=> $("#myModal").css("display","none"));
 
 function getApiKey(username, password) {
 	var hash = hashPassword(password);
-	var url = origin + "/user/?id=" + username +"&hash="+hash;
+	var url = origin + "/user/login/?id=" + username +"&hash="+hash;
      $.ajax(url, {
-     	    //data : JSON.stringify(share),
-     	   // contentType : 'application/json',
      	    type : 'GET',
      	    success: (data,textStatus,jqXHR)=> {
      	    $("#loginModal").css("display","none");
