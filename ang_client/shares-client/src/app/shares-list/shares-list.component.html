@@ -28,7 +28,7 @@
         <td> {{share.companyName}} </td>
         <td> {{share.sharePrice.value}} {{share.sharePrice.currency}} </td>
         <td> {{share.numberOfSharesAvailable}} </td>
-        <td> {{share.lastUpdate}} </td>
+        <td> {{share.lastUpdate * 1000 | date:'medium'}} </td>
       </tr>
     </tbody>
 </table>

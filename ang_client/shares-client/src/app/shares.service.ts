@@ -6,9 +6,14 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SharesService {
   ORIGIN = 'http://localhost:8080';
+
   constructor(private httpClient: HttpClient) { }
 
   public getShares() {
     return this.httpClient.get(this.ORIGIN + '/share/list');
+  }
+
+  public getUserShares(user = 'w') {
+    return this.httpClient.get(this.ORIGIN + '/share/user/' + user);
   }
 }

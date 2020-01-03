@@ -1,0 +1,23 @@
+<table id="sharesTable" style="width:100%">
+    <thead> 
+    <tr>
+        <th *ngIf="listUserIds"> UserId </th>
+        <th class="always">Symbol</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Last Update</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let us of userShares">
+        <td *ngIf="listUserIds"> {{us.userId}} </td>
+        <td> {{us.share.companySymbol}} </td>
+        <td> {{us.share.companyName}} </td>
+        <td> {{us.share.sharePrice.value}} {{us.share.sharePrice.currency}} </td>
+        <td> {{us.quantity}} </td>
+        <td> {{us.share.lastUpdate * 1000 | date:'medium'}} </td>
+      </tr>
+    </tbody>
+</table>
+
