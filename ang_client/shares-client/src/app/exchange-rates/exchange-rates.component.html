@@ -1,0 +1,9 @@
+<p>exchange-rates works!</p>
+
+<div *ngFor="let rate of rates">
+  <h2>{{rate.Id}}</h2>
+
+    <p>
+    {{rate.CurrencyName}} rate in GBP: {{rate.RateInGbp}}
+    </p>
+</div>
