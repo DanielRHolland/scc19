@@ -5,10 +5,10 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class SharesService {
-
+  ORIGIN = 'http://localhost:8080';
   constructor(private httpClient: HttpClient) { }
 
-  public getRates() {
-    return this.httpClient.get('http://159.65.81.247:8880/rates');
+  public getShares() {
+    return this.httpClient.get(this.ORIGIN + '/share/list');
   }
 }

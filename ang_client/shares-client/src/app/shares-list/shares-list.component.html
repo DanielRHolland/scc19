@@ -1,0 +1,35 @@
+<p>Shares</p>
+<form action="/" id="searchForm">
+      <input type="text" id="searchField">
+      <input type="submit" value="Search">
+      <select id="numResultsField">
+        <option value ="1">1</option>
+        <option value ="5">5</option>
+        <option value ="10" selected="selected">10</option>
+        <option value ="25" >25</option>
+        <option value ="50"> 50</option>
+        <option value ="100">100</option>
+        <option value ="200">200</option>
+      </select>
+    </form>
+<table id="sharesTable" style="width:100%">
+    <thead>  
+    <tr>
+        <th class="always">Symbol</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Shares Available</th>
+        <th>Last Update</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let share of shares">
+        <td> {{share.companySymbol}} </td>
+        <td> {{share.companyName}} </td>
+        <td> {{share.sharePrice.value}} {{share.sharePrice.currency}} </td>
+        <td> {{share.numberOfSharesAvailable}} </td>
+        <td> {{share.lastUpdate}} </td>
+      </tr>
+    </tbody>
+</table>
+
