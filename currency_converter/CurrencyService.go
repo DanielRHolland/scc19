@@ -11,12 +11,18 @@ import (
 
 var rates []ExchangeRate
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func getRates(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(rates)
 }
 
 func getCurrencyCodes(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	var out []string
 	for i := 0; i < len(rates); i++ {
 		out = append(out, rates[i].Id)
@@ -26,6 +32,7 @@ func getCurrencyCodes(w http.ResponseWriter, r *http.Request) {
 }
 
 func getConversionRate(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	c1Id := mux.Vars(r)["c1"]
 	c2Id := mux.Vars(r)["c2"]
 	var curr1 float64 = -1
@@ -47,6 +54,7 @@ func getConversionRate(w http.ResponseWriter, r *http.Request) {
 }
 
 func getIndex(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "Available methods:\n/rates \n/codes\n/rate/{currency1}/{currency2} e.g. /rate/AER/USD")
 }
