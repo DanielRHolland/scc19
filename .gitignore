@@ -40,3 +40,6 @@ test_scalatra/sctratest/shares.db
 
 
 deployed/
+currency_converter/currency_converter
+*swp.
+**.swp
