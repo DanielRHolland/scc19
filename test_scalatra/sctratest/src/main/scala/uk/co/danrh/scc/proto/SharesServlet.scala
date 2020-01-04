@@ -1,10 +1,10 @@
 package uk.co.danrh.scc.proto
 
-import org.scalatra._
 import org.json4s.{DefaultFormats, Formats}
+import org.scalatra._
 import org.scalatra.json._
-import uk.co.danrh.scc.bl.{ApiKeyBl, SharesBl}
-import uk.co.danrh.scc.datatypes.{ApiKey, ResponseCode, Share}
+import uk.co.danrh.scc.bl.SharesBl
+import uk.co.danrh.scc.datatypes.{Purchase, ResponseCode, Share}
 
 class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSupport {
 
@@ -32,12 +32,16 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
     }
   }
 
-  get("/:id") {
+  get("/id/:id") {
     SharesBl.getShare(params("id"))
   }
 
   get("/list/?") {
     SharesBl.getShares(10)
+  }
+
+  get("/symbols/?") {
+    SharesBl.getSymbols(1000)
   }
 
   get("/convert/:c1/:c2") {
@@ -59,7 +63,7 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
   }
 
   get("/user/:id") {
-    SharesBl.getUserShares(params("id"))
+    SharesBl.getUserIdShareQuantities(params("id"))
   }
 
   notFound {
