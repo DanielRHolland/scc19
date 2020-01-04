@@ -1,0 +1,51 @@
+
+* {
+font-family: Lucidatypewriter, monospace;
+}
+
+#sharesTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#sharesTable td, #sharesTable th {
+  border: 1px solid #cce0ff;
+  padding: 10px;
+}
+
+
+#sharesTable th {
+  background-color: #0066ff;
+  color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: left;
+}
+
+#sharesTable tr:nth-child(even){background-color: #EEEEEE;}
+
+#sharesTable tr:hover {background-color: #cce0ff;}
+
+#sharesTable {
+    Width: 100%;
+}
+
+#searchForm {
+    padding: 10px;
+    width:100%;
+}
+
+
+#searchForm *{
+margin-left:auto; margin-right:0;
+}
+
+#valueField {
+    width: 70% !important;
+}
+
+#sharesTable input {
+    width: 95%;
+}
+
+

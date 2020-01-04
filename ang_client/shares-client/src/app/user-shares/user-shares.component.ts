@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SharesService } from '../shares.service';
+import { Purchase } from '../models/purchase.model';
+
 
 @Component({
   selector: 'app-user-shares',
@@ -8,7 +10,6 @@ import { SharesService } from '../shares.service';
 })
 export class UserSharesComponent implements OnInit {
   userShares;
-  listUserIds = false;
   constructor(private sharesService: SharesService) { }
 
   ngOnInit() {
@@ -16,5 +17,20 @@ export class UserSharesComponent implements OnInit {
       console.log(data);
       this.userShares = data;
     });
+  }
+
+
+  buyShare(symbol: string) {
+    console.log(symbol);
+    let purchase = new Purchase();
+    purchase.userId = this.userShares.userId;
+    purchase.companySymbol = symbol;
+    purchase.change = 1;
+    console.log(purchase);
+    this.sharesService.buyShare(purchase).subscribe( x => console.log(symbol + 'purchased'));
+  }
+
+  sellShare(symbol: string) {
+    console.log(symbol);
   }
 }

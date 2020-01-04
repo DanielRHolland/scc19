@@ -1,22 +1,25 @@
+<h3> {{userShares.userId}} </h3> 
 <table id="sharesTable" style="width:100%">
     <thead> 
     <tr>
-        <th *ngIf="listUserIds"> UserId </th>
         <th class="always">Symbol</th>
         <th>Name</th>
         <th>Price</th>
-        <th>Quantity</th>
+        <th>Shares Owned</th>
+        <th>Shares Available</th>
         <th>Last Update</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let us of userShares">
-        <td *ngIf="listUserIds"> {{us.userId}} </td>
-        <td> {{us.share.companySymbol}} </td>
-        <td> {{us.share.companyName}} </td>
-        <td> {{us.share.sharePrice.value}} {{us.share.sharePrice.currency}} </td>
-        <td> {{us.quantity}} </td>
-        <td> {{us.share.lastUpdate * 1000 | date:'medium'}} </td>
+      <tr *ngFor="let sq of userShares.shareQuantities">
+        <td> {{sq.share.companySymbol}} </td>
+        <td> {{sq.share.companyName}} </td>
+        <td> {{sq.share.sharePrice.value}} {{sq.share.sharePrice.currency}} </td>
+        <td> {{sq.quantity}} </td>
+        <td> {{sq.share.numberOfSharesAvailable}} </td>
+        <td> {{sq.share.lastUpdate * 1000 | date:'medium'}} </td>
+        <td> <button (click)="buyShare(sq.share.companySymbol)">Buy</button> </td>
+        <td> <button (click)="sellShare(sq.share.companySymbol)">Sell</button> </td>
       </tr>
     </tbody>
 </table>

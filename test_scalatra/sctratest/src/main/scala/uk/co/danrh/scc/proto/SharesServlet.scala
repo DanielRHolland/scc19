@@ -66,6 +66,12 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
     SharesBl.getUserIdShareQuantities(params("id"))
   }
 
+  post("/purchase/?") {
+    val purchase = parsedBody.extract[Purchase]
+    halt(200,
+      ResponseCode.Updated("User "+ purchase.userId + " bought " + purchase.change + " of " + purchase.companySymbol))
+  }
+
   notFound {
     contentType = formats("html")
     <h1>404 Share Resource Not found.</h1>
