@@ -23,15 +23,19 @@ trait SharesDalSqlite extends SharesDal {
 
   override def insertOrUpdateShare(share: Share): ResponseCode = {
     db withDynSession {
-      shares.insertOrUpdate(
-        share.companySymbol,
-        share.companyName,
-        share.numberOfSharesAvailable,
-        Instant.now.getEpochSecond,
-        share.sharePrice.currency,
-        share.sharePrice.value)
+      insOrUpdShare(share)
     }
   ResponseCode.Created()
+  }
+
+  private def insOrUpdShare(share: Share) = {
+    shares.insertOrUpdate(
+      share.companySymbol,
+      share.companyName,
+      share.numberOfSharesAvailable,
+      Instant.now.getEpochSecond,
+      share.sharePrice.currency,
+      share.sharePrice.value)
   }
 
   override def searchShares(number: Int, searchterms: Seq[String]): List[Share] = {
@@ -56,10 +60,10 @@ trait SharesDalSqlite extends SharesDal {
     })
     }
     override def getShareQuantities(userId: String): List[ShareQuantity] = {
-      type ResultRow = (String, String, String, Int, Long, String, Double)
+      type ResultRow = (String, String, String, Int, Long, String, Double, Int)
 
       def convRow(row: ResultRow): ShareQuantity =
-        ShareQuantity(Share(SharePrice(row._6, row._7), row._3, row._2, row._4, row._5), row._4)
+        ShareQuantity(Share(SharePrice(row._6, row._7), row._3, row._2, row._8, row._5), row._4)
 
       def convRowsRec(num: Int, itr: PositionedResultIterator[ResultRow]): List[ShareQuantity] =
         if (num > 0 && itr.hasNext) convRow(itr.next()) :: convRowsRec(num - 1, itr) else Nil
@@ -68,9 +72,33 @@ trait SharesDalSqlite extends SharesDal {
         val res = for {
           (usshs, shs) <- userShares.filter(_.userId === userId) join shares on (_.companySymbol === _.companySymbol)
         } yield (usshs.userId, usshs.companySymbol, shs.companyName, usshs.quantity,
-          shs.lastUpdate, shs.currency, shs.value)
+          shs.lastUpdate, shs.currency, shs.value, shs.sharesAvailable)
         res.results(10).map(r => convRowsRec(10, r)).right.get
       })
     }
+
+  override def getUserShare(userId: String, companySymbol: String): UserShare = {
+    db.withDynSession({
+      val res = for {
+        (usshs, shs) <- userShares.filter(_.userId === userId).filter(_.companySymbol === companySymbol) join shares on (_.companySymbol === _.companySymbol)
+      } yield (usshs.userId, usshs.companySymbol, shs.companyName, usshs.quantity,
+        shs.lastUpdate, shs.currency, shs.value, shs.sharesAvailable)
+      val row = res.first
+      UserShare(row._1,Share(SharePrice(row._6,row._7),row._3,row._2,row._8,row._5),row._4)
+    })
   }
+
+  override def insertOrUpdateUserShare(userShare: UserShare): ResponseCode = {
+    val share = userShare.share
+    db withDynSession {
+    insOrUpdShare(share)
+    userShares.insertOrUpdate(
+      userShare.userId,
+      share.companySymbol,
+      userShare.quantity
+    )
+    }
+  ResponseCode.Created()
+  }
+}
 

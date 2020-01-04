@@ -68,6 +68,7 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
 
   post("/purchase/?") {
     val purchase = parsedBody.extract[Purchase]
+    val responseCode = SharesBl.purchase(purchase)
     halt(200,
       ResponseCode.Updated("User "+ purchase.userId + " bought " + purchase.change + " of " + purchase.companySymbol))
   }

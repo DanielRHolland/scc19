@@ -15,7 +15,12 @@ trait SharesDal {
 
   def getShareQuantities(userId: String): List[ShareQuantity]
 
+  def getUserShare(userId: String, companySymbol: String) : UserShare
+
+  def insertOrUpdateUserShare(userShare: UserShare): ResponseCode
 }
 
 
 object SharesDal extends SharesDalSqlite
+
+
