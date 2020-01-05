@@ -1,5 +1,7 @@
 export class Purchase {
-   userId:string;
-   companySymbol: string;
-   change: number;
+    constructor(
+      public userId: string,
+      public companySymbol: string,
+      public change: number
+    ) {}
 }

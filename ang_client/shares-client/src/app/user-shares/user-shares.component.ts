@@ -21,16 +21,16 @@ export class UserSharesComponent implements OnInit {
 
 
   buyShare(symbol: string) {
-    console.log(symbol);
-    let purchase = new Purchase();
-    purchase.userId = this.userShares.userId;
-    purchase.companySymbol = symbol;
-    purchase.change = 1;
-    console.log(purchase);
-    this.sharesService.buyShare(purchase).subscribe( x => console.log(symbol + 'purchased'));
+    this.makeTransaction(symbol, 1); 
   }
 
   sellShare(symbol: string) {
-    console.log(symbol);
+    this.makeTransaction(symbol, -1); 
   }
+
+  makeTransaction(symbol: string, change: number) {
+    let purchase = new Purchase(this.userShares.userId, symbol, change);
+    this.sharesService.buyShare(purchase).subscribe( x => console.log(change + ' of '+ symbol + ' bought '));
+  }
+
 }
