@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ApiKeyService } from './api-key.service'
 
 @Component({
   selector: 'app-root',
@@ -7,8 +8,17 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Shares Broker';
+  apiKey;
+
+  constructor(private apiKeyService: ApiKeyService) {}
 
   onNotify(message:string):void {
     console.log(message)  
   }
+
+  ngOnInit() {
+    this.apiKeyService.current.subscribe(apiKey => this.apiKey = apiKey);
+  }
+
+
 }

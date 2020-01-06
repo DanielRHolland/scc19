@@ -8,6 +8,7 @@ import { ExchangeRatesComponent } from './exchange-rates/exchange-rates.componen
 import { SharesListComponent } from './shares-list/shares-list.component';
 import { UserSharesComponent } from './user-shares/user-shares.component';
 import { LoginComponent } from './login/login.component';
+import { ApiKeyService } from './api-key.service'
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { LoginComponent } from './login/login.component';
     HttpClientModule,
     FormsModule
   ],
-  providers: [],
+  providers: [ApiKeyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

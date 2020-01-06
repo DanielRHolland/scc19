@@ -4,6 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { Purchase } from './models/purchase.model';
+import { ApiKeyService } from './api-key.service';
 
 
   const httpOptions = {
@@ -21,19 +22,19 @@ import { Purchase } from './models/purchase.model';
 export class SharesService {
   ORIGIN = 'http://localhost:8080' + '/share';
   
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private apiKeyService: ApiKeyService) { }
 
 
   public getShares() {
-    return this.httpClient.get(this.ORIGIN + '/list');
+    return this.httpClient.get(this.ORIGIN + '/list' + this.keyExt());
   }
 
   public getUserShares(user = 'w') {
-    return this.httpClient.get(this.ORIGIN + '/user/' + user);
+    return this.httpClient.get(this.ORIGIN + '/user/' + user + this.keyExt());
   }
 
   public buyShare(purchase: Purchase) {
-    return this.httpClient.post<Purchase>(this.ORIGIN + '/purchase', purchase, httpOptions)
+    return this.httpClient.post<Purchase>(this.ORIGIN + '/purchase' + this.keyExt(), purchase, httpOptions)
       .pipe(
       // catchError(this.handleError())
       ); 
@@ -46,4 +47,6 @@ export class SharesService {
     return throwError(
       'Something bad happened; please try again later.');
   };
+
+  private keyExt () { return '?key='+ this.apiKeyService.getValue(); }
 }
