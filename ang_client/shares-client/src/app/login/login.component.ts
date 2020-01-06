@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { LoginService } from '../login.service';
 import { UserLogin } from '../user-login';
 
@@ -10,14 +10,17 @@ import { UserLogin } from '../user-login';
 export class LoginComponent {
   submitted = false;
   model = new UserLogin('',''); 
+  @Output() notify: EventEmitter<string> = new EventEmitter<string>();
   constructor( private loginService: LoginService) { }
   
 
   onSubmit() { this.login(); this.submitted = true; }
 
+
   login() {
-    this.loginService.getApiKey(this.model).subscribe( data => console.log(data['key'])
+    this.loginService.getApiKey(this.model).subscribe( data => this.notify.emit(data['key'])
     );
   }
+
 
 }

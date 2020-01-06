@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Shares Broker';
+
+  onNotify(message:string):void {
+    console.log(message)  
+  }
 }
