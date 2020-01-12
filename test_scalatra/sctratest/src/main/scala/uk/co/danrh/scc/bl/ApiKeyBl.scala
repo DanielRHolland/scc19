@@ -21,7 +21,7 @@ trait ApiKeyBl {
     } else Left(ResponseCode.Failed())
   }
 
-  def checkKeyValid(key: ApiKey):Boolean = true//session_keys.contains(key.key)
+  def checkKeyValid(key: ApiKey):Boolean = session_keys.contains(key.key)
 }
 
 object ApiKeyBl extends ApiKeyBl

@@ -3,8 +3,8 @@ package uk.co.danrh.scc.proto
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra._
 import org.scalatra.json._
-import uk.co.danrh.scc.bl.SharesBl
-import uk.co.danrh.scc.datatypes.{Purchase, ResponseCode, Share}
+import uk.co.danrh.scc.bl.{ApiKeyBl, SharesBl}
+import uk.co.danrh.scc.datatypes.{ApiKey, Purchase, ResponseCode, Share}
 
 class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSupport {
 
@@ -18,7 +18,7 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
   before() {
     contentType = formats("json")
     val key = multiParams("key")
-  //  if (key.isEmpty || !ApiKeyBl.checkKeyValid(ApiKey(key.head))) halt(status= 401)
+    if (key.isEmpty || !ApiKeyBl.checkKeyValid(ApiKey(key.head))) halt(status= 401)
   }
 
 
