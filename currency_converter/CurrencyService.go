@@ -21,14 +21,18 @@ func getRates(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(rates)
 }
 
-func getCurrencyCodes(w http.ResponseWriter, r *http.Request) {
+func  getCurrencyCodes() []string {
+      var out []string
+            for i := 0; i < len(rates); i++ {
+                    out = append(out, rates[i].Id)
+            }
+      return out
+}
+
+func currencyCodes(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-	var out []string
-	for i := 0; i < len(rates); i++ {
-		out = append(out, rates[i].Id)
-	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(out)
+	json.NewEncoder(w).Encode(getCurrencyCodes())
 }
 
 func getConversionRate(w http.ResponseWriter, r *http.Request) {
@@ -59,15 +63,20 @@ func getIndex(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Available methods:\n/rates \n/codes\n/rate/{currency1}/{currency2} e.g. /rate/AER/USD")
 }
 
+func setupRestApi(port string) {
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/rates", getRates).Methods("GET")
+	router.HandleFunc("/codes", currencyCodes).Methods("GET")
+	router.HandleFunc("/rate/{c1}/{c2}", getConversionRate).Methods("GET")
+	router.HandleFunc("/", getIndex).Methods("GET")
+	log.Fatal(http.ListenAndServe(":"+port, router))
+}
+
 func main() {
-	ratesFile := flag.String("file", "exchange_rates.csv", "The path of the exchange rates csv file")
+        ratesFile := flag.String("file", "exchange_rates.csv", "The path of the exchange rates csv file")
 	port := flag.String("port", "8050", "the port on which to serve the server")
 	flag.Parse()
 	rates = loadRates(*ratesFile)
-	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/rates", getRates).Methods("GET")
-	router.HandleFunc("/codes", getCurrencyCodes).Methods("GET")
-	router.HandleFunc("/rate/{c1}/{c2}", getConversionRate).Methods("GET")
-	router.HandleFunc("/", getIndex).Methods("GET")
-	log.Fatal(http.ListenAndServe(":"+*port, router))
+        //getLiveRates(getCurrencyCodes())
+        setupRestApi(port)
 }
