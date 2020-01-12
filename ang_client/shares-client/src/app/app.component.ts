@@ -12,9 +12,7 @@ export class AppComponent {
 
   constructor(private apiKeyService: ApiKeyService) {}
 
-  onNotify(message:string):void {
-    console.log(message)  
-  }
+  
 
   ngOnInit() {
     this.apiKeyService.current.subscribe(apiKey => this.apiKey = apiKey);

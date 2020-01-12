@@ -1,4 +1,4 @@
 <h1> {{title}} </h1>
 <p>{{apiKey}}</p>
-<app-login (notify)='onNotify($event)'></app-login>
+<div *ngIf="apiKey"><app-menu></app-menu></div>
 <router-outlet></router-outlet>

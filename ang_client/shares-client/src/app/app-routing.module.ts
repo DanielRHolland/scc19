@@ -4,12 +4,14 @@ import { ExchangeRatesComponent } from './exchange-rates/exchange-rates.componen
 import { SharesListComponent } from './shares-list/shares-list.component'
 import { UserSharesComponent } from './user-shares/user-shares.component'
 import { LoginComponent } from './login/login.component'
+import { MainComponent } from './main/main.component'
 
 const routes: Routes = [
   {path:'rates', component: ExchangeRatesComponent},
   {path:'listall', component: SharesListComponent},
   {path:'usershares', component: UserSharesComponent},
-  {path:'login', component: LoginComponent}
+  {path:'', component: LoginComponent},
+  {path:'main', component: MainComponent}
 ];
 
 @NgModule({

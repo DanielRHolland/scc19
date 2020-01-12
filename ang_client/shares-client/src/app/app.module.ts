@@ -8,7 +8,9 @@ import { ExchangeRatesComponent } from './exchange-rates/exchange-rates.componen
 import { SharesListComponent } from './shares-list/shares-list.component';
 import { UserSharesComponent } from './user-shares/user-shares.component';
 import { LoginComponent } from './login/login.component';
-import { ApiKeyService } from './api-key.service'
+import { ApiKeyService } from './api-key.service';
+import { MenuComponent } from './menu/menu.component';
+import { MainComponent } from './main/main.component'
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { ApiKeyService } from './api-key.service'
     ExchangeRatesComponent,
     SharesListComponent,
     UserSharesComponent,
-    LoginComponent
+    LoginComponent,
+    MenuComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
