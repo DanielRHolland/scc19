@@ -2,6 +2,8 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { LoginService } from '../login.service';
 import { UserLogin } from '../user-login';
 import { Router } from "@angular/router";
+import { ApiKeyService } from '../api-key.service';
+
 
 @Component({
   selector: 'app-login',
@@ -11,14 +13,21 @@ import { Router } from "@angular/router";
 export class LoginComponent {
   model = new UserLogin('',''); 
   mode = 'login'; 
-  @Output() notify: EventEmitter<string> = new EventEmitter<string>();
-
-  constructor( private loginService: LoginService, private router: Router) { }
+  constructor( private loginService: LoginService, private router: Router, private apiKeyService: ApiKeyService ) { }
   
-  onSubmit() { console.log(this.mode); this.login(); this.router.navigate(['usershares']); }
+  onSubmit() { 
+    if (this.mode == 'login') {
+      this.login(this.model);
+    } else {
+      this.loginService.createUser(this.model).subscribe(data => this.login(data['obj']));
+    }
+  }
 
-  login() {
-    this.loginService.getApiKey(this.model);
+  login(model) {
+    this.loginService.getApiKey(model).subscribe(data => {
+      this.apiKeyService.change(data['key']);
+    });
+    this.router.navigate(['usershares']); 
   }
 
 }

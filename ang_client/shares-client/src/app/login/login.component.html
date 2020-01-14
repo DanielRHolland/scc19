@@ -11,12 +11,12 @@
 
     <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
         <mat-form-field>
-          <label for="username">Username</label>
-          <input matInput type="text" class="form-control" id="username" required [(ngModel)]="model.username" name="username">
+          <label for="userId">Username</label>
+          <input matInput type="text" class="form-control" id="userId" required [(ngModel)]="model.userId" name="userId">
         </mat-form-field>
         <mat-form-field>
-          <label for="password">Password</label>
-          <input matInput type="text" class="form-control" id="password" required [(ngModel)]="model.password" name="password">
+          <label for="pwhash">Password</label>
+          <input matInput type="text" class="form-control" id="pwhash" required [(ngModel)]="model.pwhash" name="pwhash">
         </mat-form-field>
 
       <button mat-raised-button color="primary" type="submit" class="btn btn-success">→</button>

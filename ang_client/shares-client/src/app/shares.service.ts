@@ -29,8 +29,8 @@ export class SharesService {
     return this.httpClient.get(this.ORIGIN + '/list' + this.keyExt());
   }
 
-  public getUserShares(user = 'w') {
-    return this.httpClient.get(this.ORIGIN + '/user/' + user + this.keyExt());
+  public getUserShares() {
+    return this.httpClient.get(this.ORIGIN + '/user' + this.keyExt());
   }
 
   public buyShare(purchase: Purchase) {
@@ -39,8 +39,6 @@ export class SharesService {
       // catchError(this.handleError())
       ); 
       }
-
-
 
   private handleError() {
     // return an observable with a user-facing error message
