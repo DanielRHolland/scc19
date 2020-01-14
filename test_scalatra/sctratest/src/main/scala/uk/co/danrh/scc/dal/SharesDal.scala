@@ -11,13 +11,15 @@ trait SharesDal {
 
   def searchShares(number: Int, searchterms: Seq[String]): List[Share]
 
-  def getUserShares(userId: String): List[UserShare]
+  def getUserShares(userId: String, num: Int): List[UserShare]
 
   def getShareQuantities(userId: String): List[ShareQuantity]
 
   def getUserShare(userId: String, companySymbol: String) : UserShare
 
   def insertOrUpdateUserShare(userShare: UserShare): ResponseCode
+
+  def userShareExists(userId: String, companySymbol: String) : Boolean
 }
 
 

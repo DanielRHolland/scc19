@@ -66,6 +66,10 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
     SharesBl.getUserIdShareQuantities(params("id"))
   }
 
+  get("/user") {
+    SharesBl.getUserIdShareQuantities(ApiKeyBl.getUserId(multiParams("key").head))
+  }
+
   post("/purchase/?") {
     val purchase = parsedBody.extract[Purchase]
     val responseCode: ResponseCode = SharesBl.purchase(purchase)

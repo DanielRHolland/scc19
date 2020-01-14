@@ -16,7 +16,7 @@ trait UsersDalSqllite extends UsersDal {
       user.pwhash
       )
     }
-  ResponseCode.Created()
+  ResponseCode.Created(obj = user)
   }
 }
 

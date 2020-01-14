@@ -21,6 +21,9 @@ trait SharesDalSqlite extends SharesDal {
   override def getShare(id: String): Share = convertRowToShare(db.withDynSession(
     shares.filter(_.companySymbol===id).first))
 
+  override def userShareExists(userId: String, companySymbol: String): Boolean =
+    getUserShares(userId, 1000).exists(_.share.companySymbol==companySymbol)//todo make this work with any number of usershares
+
   override def insertOrUpdateShare(share: Share): ResponseCode = {
     db withDynSession {
       insOrUpdShare(share)
@@ -44,7 +47,7 @@ trait SharesDalSqlite extends SharesDal {
       .results(number).map(r => convRowsToSharesRec(number,r)).right.get)
   }
 
-  override def getUserShares(userId: String): List[UserShare] = {
+  override def getUserShares(userId: String, num: Int = 10): List[UserShare] = {
     type ResultRow = (String,String,String,Int,Long,String,Double)
     def convRow(row: ResultRow): UserShare =
       UserShare(row._1, Share(SharePrice(row._6,row._7), row._3,row._2,row._4,row._5), row._4)
@@ -56,7 +59,7 @@ trait SharesDalSqlite extends SharesDal {
           (usshs, shs) <- userShares.filter(_.userId === userId) join shares on(_.companySymbol === _.companySymbol)
         } yield (usshs.userId, usshs.companySymbol, shs.companyName, usshs.quantity,
         shs.lastUpdate, shs.currency, shs.value)
-        res.results(10).map(r => convRowsRec(10, r)).right.get
+        res.results(num).map(r => convRowsRec(r.length, r)).right.get
     })
     }
     override def getShareQuantities(userId: String): List[ShareQuantity] = {

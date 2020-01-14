@@ -1,7 +1,7 @@
 package uk.co.danrh.scc.bl
 
 import uk.co.danrh.scc.dal.SharesDal
-import uk.co.danrh.scc.datatypes.{Purchase, ResponseCode, Share, UserIdShareQuantities, UserShare}
+import uk.co.danrh.scc.datatypes.{Purchase, ResponseCode, Share, UserIdCompanySymbol, UserIdShareQuantities, UserShare}
 
 trait SharesBl {
   def getShare(id: String): Share = SharesDal.getShare(id)
@@ -25,6 +25,11 @@ trait SharesBl {
         numberOfSharesAvailable =  userShare.share.numberOfSharesAvailable - change ),
         quantity = userShare.quantity + change)
     SharesDal.insertOrUpdateUserShare(userShareUpdated)
+  }
+  def createUserShare(userIdCompanySymbol: UserIdCompanySymbol): ResponseCode = {
+    if (!SharesDal.userShareExists(userIdCompanySymbol.userId,userIdCompanySymbol.companySymbol)) {
+      SharesDal.insertOrUpdateUserShare(UserShare(userIdCompanySymbol.userId, getShare(userIdCompanySymbol.companySymbol), 0))
+    } else ResponseCode.Failed("Failed: UserShare already exists")
   }
 }
 
