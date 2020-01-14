@@ -3,13 +3,17 @@
 <table id="sharesTable" style="width:100%">
     <thead> 
     <tr>
-        <th class="always">Symbol</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Shares Owned</th>
-        <th>Shares Available</th>
-        <th>Last Update</th>
-      </tr>
+      <th class="always">Symbol</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Shares Owned</th>
+      <th>Shares Available</th>
+      <th>Last Update</th>
+      <td>Buy/Sell Quantity:</td>
+      <td>
+          <input matInput placeholder="Quantity" type="number" [(ngModel)]="change" [ngModelOptions]="{standalone: true}">
+      </td>
+    </tr>
     </thead>
     <tbody>
       <tr *ngFor="let sq of userShares.shareQuantities">
@@ -19,16 +23,12 @@
         <td> {{sq.quantity}} </td>
         <td> {{sq.share.numberOfSharesAvailable}} </td>
         <td> {{sq.share.lastUpdate * 1000 | date:'medium'}} </td>
-        <td> <button (click)="buyShare(sq.share.companySymbol)">Buy</button> </td>
-        <td> <button (click)="sellShare(sq.share.companySymbol)">Sell</button> </td>
+        <td> <button mat-button (click)="buyShare(sq.share.companySymbol)">Buy</button> </td>
+        <td> <button mat-button (click)="sellShare(sq.share.companySymbol)">Sell</button> </td>
       </tr>
     </tbody>
 </table>
-
 </div>
-
 <ng-template #elseBlock>
   <h3> No shares! </h3>
-
 </ng-template>
-

@@ -10,12 +10,12 @@ import { Router } from "@angular/router";
 })
 export class LoginComponent {
   model = new UserLogin('',''); 
-  
+  mode = 'login'; 
   @Output() notify: EventEmitter<string> = new EventEmitter<string>();
 
   constructor( private loginService: LoginService, private router: Router) { }
   
-  onSubmit() { this.login(); this.router.navigate(['usershares']); }
+  onSubmit() { console.log(this.mode); this.login(); this.router.navigate(['usershares']); }
 
   login() {
     this.loginService.getApiKey(this.model);

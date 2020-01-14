@@ -29,23 +29,3 @@ font-family: Lucidatypewriter, monospace;
 #sharesTable {
     Width: 100%;
 }
-
-#searchForm {
-    padding: 10px;
-    width:100%;
-}
-
-
-#searchForm *{
-margin-left:auto; margin-right:0;
-}
-
-#valueField {
-    width: 70% !important;
-}
-
-#sharesTable input {
-    width: 95%;
-}
-
-

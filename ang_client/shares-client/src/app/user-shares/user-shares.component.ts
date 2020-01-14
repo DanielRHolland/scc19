@@ -10,17 +10,15 @@ import { ApiKeyService } from '../api-key.service';
 })
 export class UserSharesComponent implements OnInit {
   userShares;
+  change = 10;
   constructor(private sharesService: SharesService, private apiKeyService: ApiKeyService) { }
 
   ngOnInit() {
-    console.log('usc1');
     this.apiKeyService.current.subscribe( apiKey => {
-      console.log("usc"+apiKey);
-      if (apiKey != '') {
-    this.sharesService.getUserShares().subscribe((data)=>{
-      console.log(data);
-      this.userShares = data;
-    });
+          if (apiKey != '') {
+            this.sharesService.getUserShares().subscribe((data)=>{
+            this.userShares = data;
+          });
       }
     }
     );
@@ -28,21 +26,22 @@ export class UserSharesComponent implements OnInit {
 
 
   buyShare(symbol: string) {
-    this.makeTransaction(symbol, 1); 
+    this.makeTransaction(symbol, this.change); 
   }
 
   sellShare(symbol: string) {
-    this.makeTransaction(symbol, -1); 
+    this.makeTransaction(symbol, -this.change); 
   }
 
   makeTransaction(symbol: string, change: number) {
     let purchase = new Purchase(this.userShares.userId, symbol, change);
-    this.sharesService.buyShare(purchase).subscribe( x => {
+    this.sharesService.buyShare(purchase).subscribe( data => {
+      var updatedSQ = data['obj'];
       this.userShares.shareQuantities.forEach( shareQuantity =>
         {
           if (shareQuantity.share.companySymbol == symbol) {
-          shareQuantity.quantity += change;
-          shareQuantity.share.numberOfSharesAvailable -= change;
+          shareQuantity.quantity = updatedSQ.quantity;
+          shareQuantity.share.numberOfSharesAvailable = updatedSQ.share.numberOfSharesAvailable;
           }
         }
       );

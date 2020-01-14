@@ -1,17 +1,24 @@
-<div class="container">
-    <h1>Login</h1>
+    <mat-card>
+    <mat-card-header><mat-card-title>Login</mat-card-title></mat-card-header>
+      <mat-radio-group [(ngModel)]="mode">
+        <mat-radio-button value="login">
+          Login
+        </mat-radio-button>
+        <mat-radio-button  value="register">
+          Register
+        </mat-radio-button>
+      </mat-radio-group>
+
     <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" class="form-control" id="username" required [(ngModel)]="model.username" name="username">
-      </div>
+        <mat-form-field>
+          <label for="username">Username</label>
+          <input matInput type="text" class="form-control" id="username" required [(ngModel)]="model.username" name="username">
+        </mat-form-field>
+        <mat-form-field>
+          <label for="password">Password</label>
+          <input matInput type="text" class="form-control" id="password" required [(ngModel)]="model.password" name="password">
+        </mat-form-field>
 
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="text" class="form-control" id="password" required [(ngModel)]="model.password" name="password">
-      </div>
-
-      <button type="submit" class="btn btn-success">Submit</button>
-
+      <button mat-raised-button color="primary" type="submit" class="btn btn-success">→</button>
     </form>
-</div>
+</mat-card>
