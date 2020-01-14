@@ -25,7 +25,7 @@ trait SharesDalSqlite extends SharesDal {
     db withDynSession {
       insOrUpdShare(share)
     }
-  ResponseCode.Created()
+  ResponseCode.Created(obj = share)
   }
 
   private def insOrUpdShare(share: Share) = {
@@ -98,7 +98,7 @@ trait SharesDalSqlite extends SharesDal {
       userShare.quantity
     )
     }
-  ResponseCode.Created()
+  ResponseCode.Created(obj = userShare)
   }
 }
 

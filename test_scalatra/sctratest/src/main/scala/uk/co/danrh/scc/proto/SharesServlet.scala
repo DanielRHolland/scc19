@@ -26,9 +26,9 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
     val share: Share = parsedBody.extract[Share]
     val responseCode = SharesBl.createShare(share)
     responseCode match {
-      case ResponseCode.Failed(msg) => halt(status = 404, body = responseCode)
-      case ResponseCode.Created(msg) => halt(status = 201, body = responseCode)
-      case ResponseCode.Updated(msg) => halt(status = 200, body = responseCode)
+      case ResponseCode.Failed(msg, obj) => halt(status = 404, body = responseCode)
+      case ResponseCode.Created(msg, obj) => halt(status = 201, body = responseCode)
+      case ResponseCode.Updated(msg, obj) => halt(status = 200, body = responseCode)
     }
   }
 
@@ -68,9 +68,12 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
 
   post("/purchase/?") {
     val purchase = parsedBody.extract[Purchase]
-    val responseCode = SharesBl.purchase(purchase)
-    halt(200,
-      ResponseCode.Updated("User "+ purchase.userId + " bought " + purchase.change + " of " + purchase.companySymbol))
+    val responseCode: ResponseCode = SharesBl.purchase(purchase)
+    responseCode match {
+      case ResponseCode.Created(msg, obj) => halt(201, responseCode)
+      case ResponseCode.Updated(msg, obj) => halt(200, responseCode)
+      case ResponseCode.Failed(msg, obj) => halt(401, responseCode)
+    }
   }
 
   notFound {

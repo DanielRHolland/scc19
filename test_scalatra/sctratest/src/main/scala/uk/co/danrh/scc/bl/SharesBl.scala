@@ -17,10 +17,13 @@ trait SharesBl {
   def getUserIdShareQuantities(userId: String) : UserIdShareQuantities = UserIdShareQuantities(userId, SharesDal.getShareQuantities(userId))
   def purchase(purchase: Purchase) : ResponseCode = {
     val userShare = SharesDal.getUserShare(purchase.userId, purchase.companySymbol)
+    val change = if (purchase.change > userShare.share.numberOfSharesAvailable) userShare.share.numberOfSharesAvailable
+      else if (-purchase.change > userShare.quantity) -userShare.quantity
+      else purchase.change
     val userShareUpdated = userShare.copy(
       share = userShare.share.copy(
-        numberOfSharesAvailable =  userShare.share.numberOfSharesAvailable - purchase.change ),
-      quantity = userShare.quantity + purchase.change)
+        numberOfSharesAvailable =  userShare.share.numberOfSharesAvailable - change ),
+        quantity = userShare.quantity + change)
     SharesDal.insertOrUpdateUserShare(userShareUpdated)
   }
 }

@@ -28,9 +28,9 @@ class UserServlet extends ScalatraServlet with JacksonJsonSupport with CorsSuppo
   put("/create/?") {
     val responseCode = UsersBl.createUser(parsedBody.extract[User])
     responseCode match {
-      case ResponseCode.Failed(msg) => halt(status = 404, body = responseCode)
-      case ResponseCode.Updated(msg) => halt(status = 201, body = responseCode)
-      case ResponseCode.Created(msg) => halt(status = 201, body = responseCode)
+      case ResponseCode.Failed(msg, obj) => halt(status = 404, body = responseCode)
+      case ResponseCode.Updated(msg, obj) => halt(status = 201, body = responseCode)
+      case ResponseCode.Created(msg, obj) => halt(status = 201, body = responseCode)
     }
   }
 }
