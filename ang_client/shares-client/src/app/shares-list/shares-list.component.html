@@ -29,6 +29,7 @@
         <td> {{share.sharePrice.value}} {{share.sharePrice.currency}} </td>
         <td> {{share.numberOfSharesAvailable}} </td>
         <td> {{share.lastUpdate * 1000 | date:'medium'}} </td>
+        <td><button mat-raised-button color="primary" (click)="addShare(share.companySymbol)">+</button></td>
       </tr>
     </tbody>
 </table>

@@ -15,8 +15,10 @@ trait SharesBl {
     SharesDal.searchShares(number,searchterms)
   def getUserShares(userId: String) : List[UserShare] = SharesDal.getUserShares(userId)
   def getUserIdShareQuantities(userId: String) : UserIdShareQuantities = UserIdShareQuantities(userId, SharesDal.getShareQuantities(userId))
-  def purchase(purchase: Purchase) : ResponseCode = {
-    val userShare = SharesDal.getUserShare(purchase.userId, purchase.companySymbol)
+  def purchase(userId: String, purchase: Purchase) : ResponseCode = {
+    if (!SharesDal.userShareExists(userId,purchase.companySymbol))
+      SharesDal.insertOrUpdateUserShare(UserShare(userId, getShare(purchase.companySymbol), 0))
+    val userShare =  SharesDal.getUserShare(userId, purchase.companySymbol)
     val change = if (purchase.change > userShare.share.numberOfSharesAvailable) userShare.share.numberOfSharesAvailable
       else if (-purchase.change > userShare.quantity) -userShare.quantity
       else purchase.change
@@ -25,11 +27,6 @@ trait SharesBl {
         numberOfSharesAvailable =  userShare.share.numberOfSharesAvailable - change ),
         quantity = userShare.quantity + change)
     SharesDal.insertOrUpdateUserShare(userShareUpdated)
-  }
-  def createUserShare(userIdCompanySymbol: UserIdCompanySymbol): ResponseCode = {
-    if (!SharesDal.userShareExists(userIdCompanySymbol.userId,userIdCompanySymbol.companySymbol)) {
-      SharesDal.insertOrUpdateUserShare(UserShare(userIdCompanySymbol.userId, getShare(userIdCompanySymbol.companySymbol), 0))
-    } else ResponseCode.Failed("Failed: UserShare already exists")
   }
 }
 

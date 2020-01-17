@@ -34,7 +34,7 @@ export class UserSharesComponent implements OnInit {
   }
 
   makeTransaction(symbol: string, change: number) {
-    let purchase = new Purchase(this.userShares.userId, symbol, change);
+    let purchase = new Purchase(symbol, change);
     this.sharesService.buyShare(purchase).subscribe( data => {
       var updatedSQ = data['obj'];
       this.userShares.shareQuantities.forEach( shareQuantity =>

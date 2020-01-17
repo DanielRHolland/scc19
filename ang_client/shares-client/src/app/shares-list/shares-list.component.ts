@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SharesService } from '../shares.service';
+import { Purchase } from '../models/purchase.model';
 
 @Component({
   selector: 'app-shares-list',
@@ -17,4 +18,7 @@ export class SharesListComponent implements OnInit {
     });
   }
 
+  addShare(symbol: string) {
+    this.sharesService.buyShare(new Purchase(symbol, 0)).subscribe(data => console.log(data));
+  }
 }

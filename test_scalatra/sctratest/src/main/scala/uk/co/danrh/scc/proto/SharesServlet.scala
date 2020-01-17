@@ -72,7 +72,7 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
 
   post("/purchase/?") {
     val purchase = parsedBody.extract[Purchase]
-    val responseCode: ResponseCode = SharesBl.purchase(purchase)
+    val responseCode: ResponseCode = SharesBl.purchase(ApiKeyBl.getUserId(multiParams("key").head), purchase)
     responseCode match {
       case ResponseCode.Created(msg, obj) => halt(201, responseCode)
       case ResponseCode.Updated(msg, obj) => halt(200, responseCode)
