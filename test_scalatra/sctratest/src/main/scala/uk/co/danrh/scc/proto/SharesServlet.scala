@@ -4,7 +4,7 @@ import org.json4s.{DefaultFormats, Formats}
 import org.scalatra._
 import org.scalatra.json._
 import uk.co.danrh.scc.bl.{ApiKeyBl, SharesBl}
-import uk.co.danrh.scc.datatypes.{ApiKey, Purchase, ResponseCode, Share}
+import uk.co.danrh.scc.datatypes.{ApiKey, Purchase, ResponseCode, SearchOptions, Share}
 
 class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSupport {
 
@@ -62,12 +62,18 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
     SharesBl.getCurrencies
   }
 
-  get("/user/:id") {
+  get("/user/u/:id") {
     SharesBl.getUserIdShareQuantities(params("id"))
   }
 
   get("/user") {
-    SharesBl.getUserIdShareQuantities(ApiKeyBl.getUserId(multiParams("key").head))
+    val userId = ApiKeyBl.getUserId(multiParams("key").head)
+    val number = if (multiParams("number").isEmpty) 10 else (multiParams("number").head.toInt)
+    val searchterms = multiParams("st").toList
+    val orderBy = if (multiParams("ob").isEmpty) "default" else multiParams("ob").head
+    val searchOptions = SearchOptions(number,searchterms,orderBy)
+    if (searchterms.isEmpty) SharesBl.getUserIdShareQuantities(userId, searchOptions)
+      else SharesBl.searchUserIdShareQuantities(userId, searchOptions)
   }
 
   post("/purchase/?") {

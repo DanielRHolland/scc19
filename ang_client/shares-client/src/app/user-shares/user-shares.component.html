@@ -3,8 +3,8 @@
 <table id="sharesTable" style="width:100%">
     <thead> 
       <tr>
-        <td></td>
-        <td></td>
+        <td class="hide"></td>
+        <td class="hide"></td>
         <td>
             <mat-select [(ngModel)]="currency" (selectionChange)="currencyChange()">
               <mat-option *ngFor="let c of currencies" [value]="c" >
@@ -14,12 +14,12 @@
         </td>
       </tr>
     <tr>
-      <th class="always">Symbol</th>
-      <th>Name</th>
-      <th>Price</th>
-      <th>Shares Owned</th>
-      <th>Shares Available</th>
-      <th>Last Update</th>
+      <th class="always">Symbol<button mat-button (click)='setOrderBy("CompanySymbolDesc")'>↓</button><button mat-button (click)='setOrderBy("CompanySymbolAsc")'>↑</button></th>
+      <th>Name   <button mat-button (click)='setOrderBy("CompanyNameDesc")'>↓</button><button mat-button (click)='setOrderBy("CompanyNameAsc")'>↑</button></th>
+      <th>Price<button mat-button (click)='setOrderBy("ValueDesc")'>↓</button><button mat-button (click)='setOrderBy("ValueAsc")'>↑</button></th>
+      <th>Shares Owned<button mat-button (click)='setOrderBy("QuantityDesc")'>↓</button><button mat-button (click)='setOrderBy("QuantityAsc")'>↑</button></th>
+      <th>Shares Available<button mat-button (click)='setOrderBy("SharesAvailableDesc")'>↓</button><button mat-button (click)='setOrderBy("SharesAvailableAsc")'>↑</button></th>
+      <th>Last Update<button mat-button (click)='setOrderBy("LastUpdateDesc")'>↓</button><button mat-button (click)='setOrderBy("LastUpdateAsc")'>↑</button></th>
       <td>Buy/Sell Quantity:</td>
       <td>
           <input matInput placeholder="Quantity" type="number" [(ngModel)]="change" [ngModelOptions]="{standalone: true}">

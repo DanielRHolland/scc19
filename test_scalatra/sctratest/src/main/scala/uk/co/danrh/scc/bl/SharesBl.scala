@@ -1,7 +1,7 @@
 package uk.co.danrh.scc.bl
 
 import uk.co.danrh.scc.dal.SharesDal
-import uk.co.danrh.scc.datatypes.{Purchase, ResponseCode, Share, UserIdCompanySymbol, UserIdShareQuantities, UserShare}
+import uk.co.danrh.scc.datatypes.{Purchase, ResponseCode, SearchOptions, Share, UserIdCompanySymbol, UserIdShareQuantities, UserShare}
 
 trait SharesBl {
   def getShare(id: String): Share = SharesDal.getShare(id)
@@ -28,6 +28,11 @@ trait SharesBl {
         quantity = userShare.quantity + change)
     SharesDal.insertOrUpdateUserShare(userShareUpdated)
   }
+  def getUserIdShareQuantities(userId: String, searchOptions: SearchOptions) = UserIdShareQuantities(userId,
+    SharesDal.getShareQuantities(userId, searchOptions))
+
+  def searchUserIdShareQuantities(userId: String, searchOptions: SearchOptions): Any = ???
+
 }
 
 object SharesBl extends SharesBl

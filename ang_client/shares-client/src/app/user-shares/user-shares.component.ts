@@ -15,17 +15,12 @@ export class UserSharesComponent implements OnInit {
   change = 10;
   currencies = ["GBP", "USD", "EUR"];
   currency = "GBP";
+  orderBy = "default"
   constructor(private ratesService: RatesService, private sharesService: SharesService, private apiKeyService: ApiKeyService) { }
 
-  ngOnInit() {
-    this.apiKeyService.current.subscribe( apiKey => {
-          if (apiKey != '') {
-            this.sharesService.getUserShares().subscribe((data)=>{
-            this.userShares = data;
-          });
-      }
-    }
-    );
+  ngOnInit() 
+    {
+     this.update(); 
   }
 
 
@@ -76,6 +71,17 @@ export class UserSharesComponent implements OnInit {
     });
   }
 
+  setOrderBy(orderBy) {
+    this.orderBy = orderBy;
+    this.update();
+    this.currencyChange();
+  }
+
+  update() {
+    this.sharesService.getUserShares(this.orderBy).subscribe((data)=>{
+      this.userShares = data;
+    });
+  }
 
 
 }

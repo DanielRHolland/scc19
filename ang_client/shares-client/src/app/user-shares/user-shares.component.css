@@ -13,6 +13,10 @@ font-family: Lucidatypewriter, monospace;
   padding: 10px;
 }
 
+#sharesTable .hide {
+  visibility:hidden;
+  border: none;
+}
 
 #sharesTable th {
   background-color: #0066ff;
