@@ -26,8 +26,8 @@ export class LoginComponent {
   login(model) {
     this.loginService.getApiKey(model).subscribe(data => {
       this.apiKeyService.change(data['key']);
+      this.router.navigate(['usershares']); 
     });
-    this.router.navigate(['usershares']); 
   }
 
 }

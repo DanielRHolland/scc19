@@ -1,5 +1,5 @@
 package uk.co.danrh.scc.dal
-import uk.co.danrh.scc.datatypes.{ResponseCode, Share, SharePrice}
+import uk.co.danrh.scc.datatypes.{ResponseCode, SearchOptions, Share, SharePrice}
 
 
 trait SharesDalMock extends SharesDal {
@@ -14,10 +14,12 @@ trait SharesDalMock extends SharesDal {
     Share(sharePrice,"Company 5", "CY5",700,d),
     Share(sharePrice,"Company 6", "CY6",650,d))
 
-  override def getShares(number: Int): List[Share] =
+  override def getShares(searchOptions: SearchOptions = SearchOptions()): List[Share] = {
+    val number = searchOptions.numberOfResults
     if (number== -1 || number>=shares.length) shares
     else shares.slice(0, number)
-  override def getShare(id:String): Share = getShares(-1).find(s => s.companySymbol == id).get
+  }
+  override def getShare(id:String): Share = getShares(SearchOptions(-1)).find(s => s.companySymbol == id).get
   override def insertOrUpdateShare(share: Share): ResponseCode = {
     shares = share :: shares
     ResponseCode.Created()

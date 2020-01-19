@@ -37,7 +37,7 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
   }
 
   get("/list/?") {
-    SharesBl.getShares(10)
+    SharesBl.getShares(SearchOptions())
   }
 
   get("/symbols/?") {
@@ -50,12 +50,7 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
 
 
   get("/list/:number") {
-    val searchterms = multiParams("st")
-    if (searchterms.isEmpty) {
-      SharesBl.getShares(params("number").toInt)
-    } else {
-      SharesBl.searchShares(params("number").toInt, searchterms)
-    }
+    SharesBl.getShares(parseSearchOptions)
   }
 
   get("/currencies/?") {
@@ -68,13 +63,17 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
 
   get("/user") {
     val userId = ApiKeyBl.getUserId(multiParams("key").head)
-    val number = if (multiParams("number").isEmpty) 10 else (multiParams("number").head.toInt)
-    val searchterms = multiParams("st").toList
-    val orderBy = if (multiParams("ob").isEmpty) "default" else multiParams("ob").head
-    val searchOptions = SearchOptions(number,searchterms,orderBy)
-    if (searchterms.isEmpty) SharesBl.getUserIdShareQuantities(userId, searchOptions)
-      else SharesBl.searchUserIdShareQuantities(userId, searchOptions)
+    val searchOptions: SearchOptions = parseSearchOptions
+    SharesBl.getUserIdShareQuantities(userId, searchOptions)
   }
+
+  private def parseSearchOptions =
+    SearchOptions(
+      if (multiParams("number").isEmpty) 10 else (multiParams("number").head.toInt),
+      multiParams("st").toList,
+      if (multiParams("ob").isEmpty) "default" else multiParams("ob").head
+    )
+
 
   post("/purchase/?") {
     val purchase = parsedBody.extract[Purchase]

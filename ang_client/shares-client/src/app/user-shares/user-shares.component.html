@@ -3,8 +3,15 @@
 <table id="sharesTable" style="width:100%">
     <thead> 
       <tr>
-        <td class="hide"></td>
-        <td class="hide"></td>
+        <td colspan="2" >
+          <form (ngSubmit)="update()" #loginForm="ngForm">
+        <mat-form-field>
+          <label for="searchTerms">Search:</label>
+          <input matInput type="text" class="form-control" id="searchTerms" required [(ngModel)]="searchTerms" name="searchTerms">
+        </mat-form-field>
+      <button mat-button type="submit" class="btn btn-success">→</button>
+    </form>
+        </td>
         <td>
             <mat-select [(ngModel)]="currency" (selectionChange)="currencyChange()">
               <mat-option *ngFor="let c of currencies" [value]="c" >

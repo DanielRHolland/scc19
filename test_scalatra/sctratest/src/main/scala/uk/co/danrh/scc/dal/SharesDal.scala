@@ -5,13 +5,9 @@ import uk.co.danrh.scc.datatypes.{ResponseCode, SearchOptions, Share, ShareQuant
 trait SharesDal {
   def getShare(id: String): Share
 
-  def getShares(number: Int): List[Share]
+  def getShares(searchOptions: SearchOptions): List[Share]
 
   def insertOrUpdateShare(share: Share): ResponseCode
-
-  def searchShares(number: Int, searchterms: Seq[String]): List[Share]
-
-  def getUserShares(userId: String, num: Int): List[UserShare]
 
   def getShareQuantities(userId: String, searchOptions: SearchOptions): List[ShareQuantity]
 
