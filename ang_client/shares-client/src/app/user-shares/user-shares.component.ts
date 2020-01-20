@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Sort } from '@angular/material/sort';
 import { SharesService } from '../shares.service';
 import { Purchase } from '../models/purchase.model';
 import { ApiKeyService } from '../api-key.service';
 import { RatesService } from '../rates.service';
+
 
 
 @Component({
@@ -13,9 +15,10 @@ import { RatesService } from '../rates.service';
 export class UserSharesComponent implements OnInit {
   userShares;
   change = 10;
-  currencies = ["GBP", "USD", "EUR"];
-  currency = "GBP";
-  orderBy = "default"
+  currencies = ["Original","GBP", "USD", "EUR"];
+  currency = "Original";
+  orderBy = "default";
+  searchTerms = "";
   constructor(private ratesService: RatesService, private sharesService: SharesService, private apiKeyService: ApiKeyService) { }
 
   ngOnInit() 
@@ -48,27 +51,31 @@ export class UserSharesComponent implements OnInit {
   }
 
   currencyChange() {
-    var rates: {[id: string] : number;} = {};
-    this.userShares.shareQuantities.forEach(sq => {
-      let prevCurr: string = sq.share.sharePrice.currency;
-      if (prevCurr != this.currency) {
-        if (!(prevCurr+this.currency in rates)) {
-          this.ratesService.getRate(prevCurr, this.currency).subscribe(data => {
-              let rate = data as number;
-              rates[prevCurr+this.currency] = rate;
-              sq.share.sharePrice.currency = this.currency;
-              sq.share.sharePrice.value *= rate;
-              console.log(rates);
-              console.log("Added rate " +prevCurr+this.currency+rate);
-            });
-        } else {
-          let rate = rates[prevCurr+this.currency];
-          sq.share.sharePrice.currency = this.currency;
-          sq.share.sharePrice.value *= rate;
+    if (this.currency == "Original") {
+      this.update();
+    } else {
+      var rates: {[id: string] : number;} = {};
+      this.userShares.shareQuantities.forEach(sq => {
+        let prevCurr: string = sq.share.sharePrice.currency;
+        if (prevCurr != this.currency) {
+          if (!(prevCurr+this.currency in rates)) {
+            this.ratesService.getRate(prevCurr, this.currency).subscribe(data => {
+                let rate = data as number;
+                rates[prevCurr+this.currency] = rate;
+                sq.share.sharePrice.currency = this.currency;
+                sq.share.sharePrice.value *= rate;
+                console.log(rates);
+                console.log("Added rate " +prevCurr+this.currency+rate);
+              });
+          } else {
+            let rate = rates[prevCurr+this.currency];
+            sq.share.sharePrice.currency = this.currency;
+            sq.share.sharePrice.value *= rate;
+          }
+          
         }
-        
-      }
-    });
+      });
+    }
   }
 
   setOrderBy(orderBy) {
@@ -78,9 +85,18 @@ export class UserSharesComponent implements OnInit {
   }
 
   update() {
-    this.sharesService.getUserShares(this.orderBy).subscribe((data)=>{
+    this.sharesService.getUserShares(this.orderBy, this.searchTerms).subscribe((data)=>{
       this.userShares = data;
     });
+  }
+
+  sortData(sort: Sort) {
+    if (sort.active && sort.direction !== '') {
+    let dir = (sort.direction==='asc') ? 'Asc' : 'Desc';
+    this.orderBy = sort.active + dir;
+    this.update();
+    this.currencyChange();
+    }
   }
 
 

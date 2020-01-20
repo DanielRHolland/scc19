@@ -29,8 +29,8 @@ export class SharesService {
     return this.httpClient.get(this.ORIGIN + '/list' + this.keyExt());
   }
 
-  public getUserShares(orderBy: string = "default") {
-    return this.httpClient.get(this.ORIGIN + '/user' + this.keyExt() + '&ob=' + orderBy);
+  public getUserShares(orderBy: string = "default", searchTerms: string = "") {
+    return this.httpClient.get(this.ORIGIN + '/user' + this.keyExt() + '&ob=' + orderBy + '&st='+searchTerms);
   }
 
   public buyShare(purchase: Purchase) {

@@ -8,7 +8,7 @@ import scala.collection.immutable.Nil
 import scala.slick.driver.SQLiteDriver.simple._
 
 object OptionsUtil {
-  def getSearchSharesBy(searchOptions: SearchOptions) = {
+  def getSearchSharesBy(searchOptions: SearchOptions): Tables.Shares => Column[Boolean] = {
     val st = searchOptions.terms.head
     t: Tables.Shares =>
       (t.companyName like "%" + st + "%") ||
@@ -16,7 +16,7 @@ object OptionsUtil {
       (t.currency like "%" + st + "%")
   }
 
-  def getSearchSharesUserSharesBy(searchOptions: SearchOptions) = {
+  def getSearchSharesUserSharesBy(searchOptions: SearchOptions): ((Tables.UserShares, Tables.Shares)) => Column[Boolean] = {
     val st = searchOptions.terms.head
     ts: (Tables.UserShares, Tables.Shares) =>
       (ts._2.companySymbol like "%" + st + "%") ||
