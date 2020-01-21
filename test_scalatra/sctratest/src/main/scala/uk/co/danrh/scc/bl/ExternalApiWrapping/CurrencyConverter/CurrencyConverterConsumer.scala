@@ -1,4 +1,4 @@
-package uk.co.danrh.scc.bl
+package uk.co.danrh.scc.bl.ExternalApiWrapping.CurrencyConverter
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
@@ -10,7 +10,7 @@ trait CurrencyConverterConsumer {
   private val origin = "http://localhost:8050/"
     def getCurrencyCodes(): List[String] = {
       val json = Source.fromURL(origin+"codes").mkString
-    val mapper = new ObjectMapper() with ScalaObjectMapper
+      val mapper = new ObjectMapper() with ScalaObjectMapper
       mapper.registerModule(DefaultScalaModule)
       mapper.readValue[List[String]](json)
     }

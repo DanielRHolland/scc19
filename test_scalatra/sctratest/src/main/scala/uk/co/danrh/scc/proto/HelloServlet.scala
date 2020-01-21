@@ -12,7 +12,25 @@ class HelloServlet extends ScalatraServlet {
   }
 
   get("/"){
-    <p> Hello there </p>
+    <div>
+    <p> Routes: </p>
+      <ul>
+        <li>/user</li>
+          <ul>
+            <li>/login GET</li>
+            <li>/create PUT</li>
+          </ul>
+        <li>/share</li>
+        <ul>
+          <li>/ POST</li>
+          <li>/id/:id GET</li>
+          <li>/list GET</li>
+          <li>/user/u/:id GET</li>
+          <li>/user GET</li>
+          <li>/purchase POST</li>
+        </ul>
+      </ul>
+    </div>
   }
 
   notFound {

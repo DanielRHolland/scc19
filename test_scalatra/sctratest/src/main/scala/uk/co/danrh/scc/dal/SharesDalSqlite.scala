@@ -60,7 +60,7 @@ trait SharesDalSqlite extends SharesDal {
     }
   }
 
-  override def getUserShare(userId: String, companySymbol: String): UserShare = {
+  override def getUserShare(userId: String, companySymbol: String): UserShare =
     db withDynSession {
       val res = for {
         (usshs, shs) <- userShares.filter(_.userId === userId).filter(_.companySymbol === companySymbol) join shares on (_.companySymbol === _.companySymbol)
@@ -69,7 +69,6 @@ trait SharesDalSqlite extends SharesDal {
       val row = res.first
       UserShare(row._1,Share(SharePrice(row._6,row._7),row._3,row._2,row._8,row._5),row._4)
     }
-  }
 
   override def insertOrUpdateUserShare(userShare: UserShare): ResponseCode = {
     val share = userShare.share

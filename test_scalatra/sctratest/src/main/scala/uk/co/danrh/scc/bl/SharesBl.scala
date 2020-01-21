@@ -1,8 +1,8 @@
 package uk.co.danrh.scc.bl
 
+import uk.co.danrh.scc.bl.ExternalApiWrapping.CurrencyConverter.CurrencyConverterConsumer
 import uk.co.danrh.scc.dal.SharesDal
-import uk.co.danrh.scc.datatypes
-import uk.co.danrh.scc.datatypes.{Purchase, ResponseCode, SearchOptions, Share, UserIdCompanySymbol, UserIdShareQuantities, UserShare}
+import uk.co.danrh.scc.datatypes.{Purchase, ResponseCode, SearchOptions, Share, UserIdShareQuantities, UserShare}
 
 trait SharesBl {
   def getShare(id: String): Share = SharesDal.getShare(id)
