@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 export class IpService {
   constructor() { }
 
-  private sharesSource = new BehaviorSubject('http://localhost:8080');
+  private sharesSource = new BehaviorSubject('http://localhost:8080');//DigitalOcean: http://159.65.81.247:8080
   sharesCurrent = this.sharesSource.asObservable();
 
   sharesChange(ip: string) {
@@ -16,16 +16,5 @@ export class IpService {
     return this.sharesSource.getValue();
   }
 
-
-  private ratesSource = new BehaviorSubject('http://159.65.81.247:8050');
-  ratesCurrent = this.ratesSource.asObservable();
-
-  ratesChange(ip: string) {
-    return this.ratesSource.next(ip);
-  }
-
-  getRatesValue() {
-    return this.ratesSource.getValue();
-  }
 
 }

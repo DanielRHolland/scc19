@@ -4,7 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule }   from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ExchangeRatesComponent } from './exchange-rates/exchange-rates.component';
 import { SharesListComponent } from './shares-list/shares-list.component';
 import { UserSharesComponent } from './user-shares/user-shares.component';
 import { LoginComponent } from './login/login.component';
@@ -27,7 +26,6 @@ import { IpService } from './ip.service'
 @NgModule({
   declarations: [
     AppComponent,
-    ExchangeRatesComponent,
     SharesListComponent,
     UserSharesComponent,
     LoginComponent,

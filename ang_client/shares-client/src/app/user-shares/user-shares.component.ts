@@ -23,7 +23,11 @@ export class UserSharesComponent implements OnInit {
 
   ngOnInit() 
     {
-     this.update(); 
+     this.update();
+     this.ratesService.getSymbols().subscribe(data => {
+      let symbols = data as string[];
+      this.currencies = ["Original"].concat(symbols);
+     }) 
   }
 
 
@@ -59,7 +63,7 @@ export class UserSharesComponent implements OnInit {
         let prevCurr: string = sq.share.sharePrice.currency;
         if (prevCurr != this.currency) {
           if (!(prevCurr+this.currency in rates)) {
-            this.ratesService.getRate(prevCurr, this.currency).subscribe(data => {
+            this.ratesService.getRate(this.currency, prevCurr).subscribe(data => {
                 let rate = data as number;
                 rates[prevCurr+this.currency] = rate;
                 sq.share.sharePrice.currency = this.currency;

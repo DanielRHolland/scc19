@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IpService } from './ip.service';
+import { ApiKeyService } from './api-key.service' 
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +9,15 @@ import { IpService } from './ip.service';
 
 export class RatesService {
 
-  constructor(private httpClient: HttpClient, private ipService: IpService) { }
+  constructor(private httpClient: HttpClient, private ipService: IpService, private apiKeyService: ApiKeyService) { }
 
-  public getRates() {
-    return this.httpClient.get(this.ipService.getRatesValue() + '/rates');
+  public getSymbols() {
+    return this.httpClient.get(this.ipService.getSharesValue() + '/share/currencies' + this.keyExt());
   }
 
   public getRate(c1: string, c2: string) {
-    return this.httpClient.get(this.ipService.getRatesValue() + '/rate/'+c1+'/'+c2);
+    return this.httpClient.get(this.ipService.getSharesValue() + '/share/convert/'+c1+'/'+c2 + this.keyExt());
   }
+
+  private keyExt () { return '?key='+ this.apiKeyService.getValue(); }
 }

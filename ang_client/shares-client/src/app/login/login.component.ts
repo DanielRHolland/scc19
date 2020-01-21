@@ -13,7 +13,6 @@ import { ApiKeyService } from '../api-key.service';
 export class LoginComponent {
   model = new UserLogin('',''); 
   mode = 'login';
-  displayIpSelector = false;
   constructor( private loginService: LoginService, private router: Router, private apiKeyService: ApiKeyService ) { }
   
   onSubmit() { 
@@ -30,9 +29,4 @@ export class LoginComponent {
       this.router.navigate(['usershares']); 
     });
   }
-
-  toggleIpSelect() {
-    this.displayIpSelector = !this.displayIpSelector;
-  }
-
 }
