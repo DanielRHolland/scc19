@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSortModule } from '@angular/material/sort';
+import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { SelectIpComponent } from './select-ip/select-ip.component'
 import { IpService } from './ip.service'
 
@@ -45,7 +46,8 @@ import { IpService } from './ip.service'
     MatInputModule,
     MatCardModule,
     MatButtonModule,
-    MatSortModule
+    MatSortModule,
+    MatSnackBarModule
   ],
   providers: [ApiKeyService, IpService],
   bootstrap: [AppComponent]

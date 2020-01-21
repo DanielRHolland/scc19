@@ -18,6 +18,15 @@ font-family: Lucidatypewriter, monospace;
   border: none;
 }
 
+#sharesTable .noborder {
+  border: none;
+}
+
+
+#sharesTable .noborder:hover {
+  background: none;
+}
+
 #sharesTable th {
   background-color: #0066ff;
   color: white;

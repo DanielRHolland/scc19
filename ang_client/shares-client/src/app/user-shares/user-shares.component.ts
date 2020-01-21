@@ -4,7 +4,8 @@ import { SharesService } from '../shares.service';
 import { Purchase } from '../models/purchase.model';
 import { ApiKeyService } from '../api-key.service';
 import { RatesService } from '../rates.service';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { isNull } from 'util';
 
 
 @Component({
@@ -15,28 +16,34 @@ import { RatesService } from '../rates.service';
 export class UserSharesComponent implements OnInit {
   userShares;
   change = 10;
-  currencies = ["Original","GBP", "USD", "EUR"];
-  currency = "Original";
+  currencies = ["GBP", "USD", "EUR"];
+  currency = "GBP";
   orderBy = "default";
   searchTerms = "";
-  constructor(private ratesService: RatesService, private sharesService: SharesService, private apiKeyService: ApiKeyService) { }
+  count = 25;
+  constructor(private ratesService: RatesService,
+     private sharesService: SharesService,
+      private apiKeyService: ApiKeyService,
+      private _snackBar: MatSnackBar ) { }
 
   ngOnInit() 
     {
      this.update();
      this.ratesService.getSymbols().subscribe(data => {
-      let symbols = data as string[];
-      this.currencies = ["Original"].concat(symbols);
+      this.currencies = data as string[];
      }) 
   }
 
-
   buyShare(symbol: string) {
-    this.makeTransaction(symbol, this.change); 
+    if (isNull(this.change)) {
+      this.displayError("Buy/Sell Quantity must be a number");
+    } else this.makeTransaction(symbol, Math.floor(this.change)); 
   }
 
   sellShare(symbol: string) {
-    this.makeTransaction(symbol, -this.change); 
+    if (isNull(this.change)) {
+      this.displayError("Buy/Sell Quantity must be a number");
+    } else this.makeTransaction(symbol, -Math.floor(this.change)); 
   }
 
   makeTransaction(symbol: string, change: number) {
@@ -85,23 +92,30 @@ export class UserSharesComponent implements OnInit {
   setOrderBy(orderBy) {
     this.orderBy = orderBy;
     this.update();
-    this.currencyChange();
   }
 
   update() {
-    this.sharesService.getUserShares(this.orderBy, this.searchTerms).subscribe((data)=>{
-      this.userShares = data;
-    });
+      if (isNull(this.count)){
+        this.displayError("Results to display must be a number");
+      } else {
+          this.sharesService.getUserShares(this.orderBy, this.searchTerms, Math.floor(this.count)).subscribe((data)=>{
+          this.userShares = data;
+          this.currencyChange();
+        });
+      }
   }
 
   sortData(sort: Sort) {
     if (sort.active && sort.direction !== '') {
-    let dir = (sort.direction==='asc') ? 'Asc' : 'Desc';
-    this.orderBy = sort.active + dir;
-    this.update();
-    this.currencyChange();
+      let dir = (sort.direction==='asc') ? 'Asc' : 'Desc';
+      this.orderBy = sort.active + dir;
+      this.update();
     }
   }
 
-
+displayError(msg: string) {
+  this._snackBar.open(msg, "Close", {
+    duration: 5000,
+  });
+}
 }

@@ -2,28 +2,38 @@
   <h3> {{userShares.userId}} </h3>
 <table matSort (matSortChange)="sortData($event)" id="sharesTable" style="width:100%">
     <thead>
-      <tr>
-        <td colspan="2" >
-          <form (ngSubmit)="update()" #loginForm="ngForm">
-        <mat-form-field>
+      <tr >
+        <td class="noborder">
           <label for="searchTerms">Search:</label>
-          <input matInput type="text" class="form-control" id="searchTerms" required [(ngModel)]="searchTerms" name="searchTerms">
-        </mat-form-field>
-      <button mat-button type="submit" class="btn btn-success">→</button>
-    </form>
         </td>
-        <td>
-            <mat-select [(ngModel)]="currency" (selectionChange)="currencyChange()">
-              <mat-option *ngFor="let c of currencies" [value]="c" >
-                {{c}}
-              </mat-option>
-            </mat-select>
+        <td class="noborder">
+
+            <form (ngSubmit)="update()" #loginForm="ngForm">
+              <mat-form-field>
+              <input matInput type="text" class="form-control" id="searchTerms" required [(ngModel)]="searchTerms" name="searchTerms"></mat-form-field>
+            </form>
         </td>
+
+        <td class="noborder">
+        
+      <button mat-button (click)="update()">→</button>
+    </td>
+       <td class="noborder"><label>Results to display:</label> </td> 
+        <td class="noborder"> 
+        <input matInput placeholder="Results to display" type="number" (onSelection)="update()" [(ngModel)]="count" [ngModelOptions]="{standalone: true}">
+      </td>
       </tr>
     <tr>
       <th mat-sort-header="CompanySymbol">Symbol</th>
       <th mat-sort-header="CompanyName">Name   </th>
       <th mat-sort-header="Value">Price</th>
+      <th>
+        <mat-select [(ngModel)]="currency" (selectionChange)="currencyChange()">
+          <mat-option *ngFor="let c of currencies" [value]="c" >
+            {{c}}
+          </mat-option>
+        </mat-select>
+      </th>
       <th mat-sort-header="Quantity">Shares Owned</th>
       <th mat-sort-header="SharesAvailable">Shares Available</th>
       <th mat-sort-header="LastUpdate">Last Update</th>
@@ -37,7 +47,7 @@
       <tr *ngFor="let sq of userShares.shareQuantities">
         <td> {{sq.share.companySymbol}} </td>
         <td> {{sq.share.companyName}} </td>
-        <td> {{sq.share.sharePrice.value | number:'1.2-2'}} {{sq.share.sharePrice.currency}} </td>
+        <td colspan=2> {{sq.share.sharePrice.value | number:'1.2-2'}} {{sq.share.sharePrice.currency}} </td>
         <td> {{sq.quantity}} </td>
         <td> {{sq.share.numberOfSharesAvailable}} </td>
         <td> {{sq.share.lastUpdate * 1000 | date:'medium'}} </td>

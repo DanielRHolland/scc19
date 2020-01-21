@@ -28,8 +28,8 @@ export class SharesService {
     return this.httpClient.get(this.getIp() + '/list' + this.keyExt());
   }
 
-  public getUserShares(orderBy: string = "default", searchTerms: string = "") {
-    return this.httpClient.get(this.getIp() + '/user' + this.keyExt() + '&ob=' + orderBy + '&st='+searchTerms);
+  public getUserShares(orderBy: string = "default", searchTerms: string = "", count: number = 10) {
+    return this.httpClient.get(this.getIp() + '/user' + this.keyExt() + '&ob=' + orderBy + '&st='+searchTerms + '&number=' + count.toString());
   }
 
   public buyShare(purchase: Purchase) {
