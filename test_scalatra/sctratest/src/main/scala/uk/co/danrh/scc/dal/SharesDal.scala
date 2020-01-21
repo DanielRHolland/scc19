@@ -16,6 +16,8 @@ trait SharesDal {
   def insertOrUpdateUserShare(userShare: UserShare): ResponseCode
 
   def userShareExists(userId: String, companySymbol: String) : Boolean
+
+  def deleteUserShare(userId: String, shareId: String): ResponseCode
 }
 
 

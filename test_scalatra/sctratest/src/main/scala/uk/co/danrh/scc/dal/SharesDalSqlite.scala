@@ -82,5 +82,11 @@ trait SharesDalSqlite extends SharesDal {
     }
     ResponseCode.Created(obj = userShare)
   }
+
+  override def deleteUserShare(userId: String, shareId: String): ResponseCode =
+    {
+      db withDynSession userShares.filter(_.companySymbol===shareId).filter(_.userId===userId).delete.run
+      ResponseCode.Updated(msg = "Deleted")
+    }
 }
 

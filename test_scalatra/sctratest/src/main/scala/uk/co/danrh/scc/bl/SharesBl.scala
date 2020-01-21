@@ -14,8 +14,11 @@ trait SharesBl {
     CurrencyConverterConsumer.getConversionRate(currency1,currency2)
   def getUserIdShareQuantities(userId: String) : UserIdShareQuantities = UserIdShareQuantities(userId, SharesDal.getShareQuantities(userId))
   def purchase(userId: String, purchase: Purchase) : ResponseCode = {
-    if (!SharesDal.userShareExists(userId,purchase.companySymbol))
+    var updated = true;
+    if (!SharesDal.userShareExists(userId,purchase.companySymbol)) {
       SharesDal.insertOrUpdateUserShare(UserShare(userId, getShare(purchase.companySymbol), 0))
+      updated = false
+    }
     val userShare =  SharesDal.getUserShare(userId, purchase.companySymbol)
     val change = if (purchase.change > userShare.share.numberOfSharesAvailable) userShare.share.numberOfSharesAvailable
       else if (-purchase.change > userShare.quantity) -userShare.quantity
@@ -24,10 +27,13 @@ trait SharesBl {
       share = userShare.share.copy(
         numberOfSharesAvailable =  userShare.share.numberOfSharesAvailable - change ),
         quantity = userShare.quantity + change)
-    SharesDal.insertOrUpdateUserShare(userShareUpdated)
+    val responseCode  = SharesDal.insertOrUpdateUserShare(userShareUpdated)
+    if (updated) ResponseCode.Updated(obj = userShareUpdated) else responseCode
   }
   def getUserIdShareQuantities(userId: String, searchOptions: SearchOptions) = UserIdShareQuantities(userId,
     SharesDal.getShareQuantities(userId, searchOptions))
+
+  def deleteUserShare(userId: String, shareId: String): Any = SharesDal.deleteUserShare(userId, shareId)
 }
 
 object SharesBl extends SharesBl

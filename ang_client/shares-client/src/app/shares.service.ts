@@ -24,12 +24,16 @@ export class SharesService {
   constructor(private httpClient: HttpClient, private apiKeyService: ApiKeyService, private ipService: IpService) { }
 
 
-  public getShares() {
-    return this.httpClient.get(this.getIp() + '/list' + this.keyExt());
+  public getShares(orderBy: string = "default", searchTerms: string = "", count: number = 10) {
+    return this.httpClient.get(this.getIp() + '/list' + this.keyExt() + '&ob=' + orderBy + '&st='+searchTerms + '&number=' + count.toString());
   }
 
   public getUserShares(orderBy: string = "default", searchTerms: string = "", count: number = 10) {
     return this.httpClient.get(this.getIp() + '/user' + this.keyExt() + '&ob=' + orderBy + '&st='+searchTerms + '&number=' + count.toString());
+  }
+
+  public deleteUserShare(companySymbol: string) {
+    return this.httpClient.delete(this.getIp() + '/usershare' + this.keyExt() + '&id=' + companySymbol)
   }
 
   public buyShare(purchase: Purchase) {
@@ -37,13 +41,9 @@ export class SharesService {
       .pipe(
       // catchError(this.handleError())
       ); 
-      }
+  }
 
-  private handleError() {
-    // return an observable with a user-facing error message
-    return throwError(
-      'Something bad happened; please try again later.');
-  };
+
   private getIp() { return this.ipService.getSharesValue() + '/share'}
   private keyExt () { return '?key='+ this.apiKeyService.getValue(); }
 }

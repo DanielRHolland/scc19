@@ -20,6 +20,7 @@ font-family: Lucidatypewriter, monospace;
 
 #sharesTable .noborder {
   border: none;
+  background: none;
 }
 
 

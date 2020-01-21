@@ -1,36 +1,50 @@
-<p>Shares</p>
-<form action="/" id="searchForm">
-      <input type="text" id="searchField">
-      <input type="submit" value="Search">
-      <select id="numResultsField">
-        <option value ="1">1</option>
-        <option value ="5">5</option>
-        <option value ="10" selected="selected">10</option>
-        <option value ="25" >25</option>
-        <option value ="50"> 50</option>
-        <option value ="100">100</option>
-        <option value ="200">200</option>
-      </select>
-    </form>
-<table id="sharesTable" style="width:100%">
-    <thead>  
-    <tr>
-        <th class="always">Symbol</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Shares Available</th>
-        <th>Last Update</th>
+<table matSort (matSortChange)="sortData($event)" id="sharesTable" style="width:100%">
+    <thead>
+      <tr>
+        <td class="noborder">
+          <label for="searchTerms">Search:</label>
+        </td>
+        <td class="noborder">
+            <form (ngSubmit)="update()" #loginForm="ngForm">
+              <mat-form-field>
+              <input matInput type="text" class="form-control" id="searchTerms" required [(ngModel)]="searchTerms" name="searchTerms"></mat-form-field>
+            </form>
+        </td>
+        <td class="noborder">
+          <button mat-button (click)="update()">→</button>
+        </td>
+      <td class="noborder"><label>Results to display:</label> </td> 
+        <td class="noborder"> 
+        <input matInput placeholder="Results to display" type="number" (onSelection)="update()" [(ngModel)]="count" [ngModelOptions]="{standalone: true}">
+      </td>
+      </tr>
+      <tr>
+        <th mat-sort-header="CompanySymbol">Symbol</th>
+        <th mat-sort-header="CompanyName">Name</th>
+        <th mat-sort-header="Value">Price</th>
+        <th>
+          <mat-select [(ngModel)]="currency" (selectionChange)="currencyChange()">
+            <mat-option *ngFor="let c of currencies" [value]="c" >
+              {{c}}
+            </mat-option>
+          </mat-select>
+        </th>
+        <th mat-sort-header="SharesAvailable">Shares Available</th>
+        <th mat-sort-header="LastUpdate">Last Update</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="shares; else elseBlock">
       <tr *ngFor="let share of shares">
         <td> {{share.companySymbol}} </td>
         <td> {{share.companyName}} </td>
-        <td> {{share.sharePrice.value}} {{share.sharePrice.currency}} </td>
+        <td colspan=2> {{share.sharePrice.value | number:'1.2-2'}} {{share.sharePrice.currency}} </td>
         <td> {{share.numberOfSharesAvailable}} </td>
         <td> {{share.lastUpdate * 1000 | date:'medium'}} </td>
-        <td><button mat-raised-button color="primary" (click)="addShare(share.companySymbol)">+</button></td>
+        <td class="noborder"><button mat-raised-button color="primary" (click)="addShare(share.companySymbol)">+</button></td>
       </tr>
     </tbody>
+    <ng-template #elseBlock>
+      <h3> No shares! </h3>
+    </ng-template>
 </table>
 

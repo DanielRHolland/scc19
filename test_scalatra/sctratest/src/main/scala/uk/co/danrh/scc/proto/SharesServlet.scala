@@ -37,7 +37,7 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
   }
 
   get("/list/?") {
-    SharesBl.getShares(SearchOptions())
+    SharesBl.getShares(parseSearchOptions)
   }
 
   get("/symbols/?") {
@@ -74,7 +74,6 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
       if (multiParams("ob").isEmpty) "default" else multiParams("ob").head
     )
 
-
   post("/purchase/?") {
     val purchase = parsedBody.extract[Purchase]
     val responseCode: ResponseCode = SharesBl.purchase(ApiKeyBl.getUserId(multiParams("key").head), purchase)
@@ -83,6 +82,12 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
       case ResponseCode.Updated(msg, obj) => halt(200, responseCode)
       case ResponseCode.Failed(msg, obj) => halt(401, responseCode)
     }
+  }
+
+  delete("/usershare") {
+    val userId = ApiKeyBl.getUserId(multiParams("key").head)
+    val shareId = params("id")
+    SharesBl.deleteUserShare(userId, shareId)
   }
 
   notFound {

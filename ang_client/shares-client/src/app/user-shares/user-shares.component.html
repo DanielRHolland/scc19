@@ -1,28 +1,30 @@
-<div *ngIf="userShares; else elseBlock">
-  <h3> {{userShares.userId}} </h3>
+
+<mat-card *ngIf='symbolToRemove' >
+    Company {{symbolToRemove}} has no shares, do you want to stop tracking it?
+    <button mat-button (click)="deleteUserShare();symbolToRemove=null">Yes</button>
+    <button mat-button (click)="symbolToRemove=null">No</button>
+  </mat-card>
 <table matSort (matSortChange)="sortData($event)" id="sharesTable" style="width:100%">
-    <thead>
-      <tr >
-        <td class="noborder">
-          <label for="searchTerms">Search:</label>
-        </td>
-        <td class="noborder">
-
-            <form (ngSubmit)="update()" #loginForm="ngForm">
-              <mat-form-field>
-              <input matInput type="text" class="form-control" id="searchTerms" required [(ngModel)]="searchTerms" name="searchTerms"></mat-form-field>
-            </form>
-        </td>
-
-        <td class="noborder">
-        
-      <button mat-button (click)="update()">→</button>
-    </td>
-       <td class="noborder"><label>Results to display:</label> </td> 
-        <td class="noborder"> 
-        <input matInput placeholder="Results to display" type="number" (onSelection)="update()" [(ngModel)]="count" [ngModelOptions]="{standalone: true}">
+  
+  <thead>
+    <tr>
+      <td class="noborder">
+        <label for="searchTerms">Search:</label>
       </td>
-      </tr>
+      <td class="noborder">
+          <form (ngSubmit)="update()" #loginForm="ngForm">
+            <mat-form-field>
+            <input matInput type="text" class="form-control" id="searchTerms" required [(ngModel)]="searchTerms" name="searchTerms"></mat-form-field>
+          </form>
+      </td>
+      <td class="noborder">
+        <button mat-button (click)="update()">→</button>
+      </td>
+    <td class="noborder"><label>Results to display:</label> </td> 
+      <td class="noborder"> 
+      <input matInput placeholder="Results to display" type="number" (onSelection)="update()" [(ngModel)]="count" [ngModelOptions]="{standalone: true}">
+    </td>
+    </tr>
     <tr>
       <th mat-sort-header="CompanySymbol">Symbol</th>
       <th mat-sort-header="CompanyName">Name   </th>
@@ -39,24 +41,25 @@
       <th mat-sort-header="LastUpdate">Last Update</th>
       <td>Buy/Sell Quantity:</td>
       <td>
-          <input matInput placeholder="Quantity" type="number" [(ngModel)]="change" [ngModelOptions]="{standalone: true}">
+        <input matInput placeholder="Quantity" type="number" [(ngModel)]="change" [ngModelOptions]="{standalone: true}">
       </td>
     </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let sq of userShares.shareQuantities">
-        <td> {{sq.share.companySymbol}} </td>
-        <td> {{sq.share.companyName}} </td>
-        <td colspan=2> {{sq.share.sharePrice.value | number:'1.2-2'}} {{sq.share.sharePrice.currency}} </td>
-        <td> {{sq.quantity}} </td>
-        <td> {{sq.share.numberOfSharesAvailable}} </td>
-        <td> {{sq.share.lastUpdate * 1000 | date:'medium'}} </td>
-        <td> <button mat-button (click)="buyShare(sq.share.companySymbol)">Buy</button> </td>
-        <td> <button mat-button (click)="sellShare(sq.share.companySymbol)">Sell</button> </td>
-      </tr>
-    </tbody>
+  </thead>
+  <tbody *ngIf="userShares; else elseBlock">
+    <tr *ngFor="let sq of userShares.shareQuantities">
+      <td> {{sq.share.companySymbol}} </td>
+      <td> {{sq.share.companyName}} </td>
+      <td colspan=2> {{sq.share.sharePrice.value | number:'1.2-2'}} {{sq.share.sharePrice.currency}} </td>
+      <td> {{sq.quantity}} </td>
+      <td> {{sq.share.numberOfSharesAvailable}} </td>
+      <td> {{sq.share.lastUpdate * 1000 | date:'medium'}} </td>
+      <td> <button mat-button (click)="buyShare(sq.share.companySymbol)">Buy</button> </td>
+      <td> <button mat-button (click)="sellShare(sq.share.companySymbol)">Sell</button> </td>
+    </tr>
+  </tbody>
+    <ng-template #elseBlock>
+      <h3> No shares! </h3>
+    </ng-template>
 </table>
-</div>
-<ng-template #elseBlock>
-  <h3> No shares! </h3>
-</ng-template>
+
+
