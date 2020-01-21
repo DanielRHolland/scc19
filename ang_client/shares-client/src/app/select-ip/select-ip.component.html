@@ -1,0 +1,12 @@
+<mat-card-content>
+      <button mat-button (click)="setLocalhost()" >Localhost</button>
+      <button mat-button (click)="setDigitalOcean()">DigitalOcean</button>
+    <form (ngSubmit)="setIps()">
+      <mat-form-field>
+        <label for="sharesIp">Set by Ip and Port:</label>
+        <input matInput type="text" class="form-control" id="sharesIp" required [(ngModel)]="sharesIp" name="sharesIp">
+      </mat-form-field>
+      <button mat-button type="submit" class="btn btn-success">→</button>
+    </form>
+</mat-card-content>
+     

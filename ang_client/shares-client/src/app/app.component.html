@@ -1,4 +1,11 @@
+<button mat-button (click)="toggleConnectionInfo()">Show Connection Information</button>
+<div *ngIf="connectionInformation">
+    <p>ApiKey= {{apiKey}}</p>  
+    <p>Server= {{ip}}</p>
+</div>
+<mat-card>
 <h1> {{title}} </h1>
-<p>{{apiKey}}</p>
+
 <div *ngIf="apiKey"><app-menu></app-menu></div>
 <router-outlet></router-outlet>
+</mat-card>

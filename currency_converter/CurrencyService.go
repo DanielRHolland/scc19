@@ -9,8 +9,6 @@ import (
 	"net/http"
 )
 
-var rates []ExchangeRate
-
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
@@ -18,15 +16,16 @@ func enableCors(w *http.ResponseWriter) {
 func getRates(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(rates)
+	json.NewEncoder(w).Encode(getDaysRates())
 }
 
-func  getCurrencyCodes() []string {
-      var out []string
-            for i := 0; i < len(rates); i++ {
-                    out = append(out, rates[i].Id)
-            }
-      return out
+func getCurrencyCodes() []string {
+	rates := getDaysRates()
+	var out []string
+	for i := 0; i < len(rates); i++ {
+		out = append(out, rates[i].Id)
+	}
+	return out
 }
 
 func currencyCodes(w http.ResponseWriter, r *http.Request) {
@@ -39,6 +38,7 @@ func getConversionRate(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 	c1Id := mux.Vars(r)["c1"]
 	c2Id := mux.Vars(r)["c2"]
+	rates := getDaysRates()
 	var curr1 float64 = -1
 	var curr2 float64 = -1
 	for i := 0; i < len(rates) && (curr1 == -1 || curr2 == -1); i++ {
@@ -73,10 +73,7 @@ func setupRestApi(port string) {
 }
 
 func main() {
-        ratesFile := flag.String("file", "exchange_rates.csv", "The path of the exchange rates csv file")
 	port := flag.String("port", "8050", "the port on which to serve the server")
 	flag.Parse()
-	rates = loadRates(*ratesFile)
-        //getLiveRates(getCurrencyCodes())
-        setupRestApi(port)
+	setupRestApi(*port)
 }

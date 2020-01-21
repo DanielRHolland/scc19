@@ -1,5 +1,5 @@
-    <mat-card>
-    <mat-card-header><mat-card-title>Login</mat-card-title></mat-card-header>
+<mat-card>
+  <mat-card-header><mat-card-title>Login</mat-card-title></mat-card-header>
       <mat-radio-group [(ngModel)]="mode">
         <mat-radio-button value="login">
           Login
@@ -8,7 +8,7 @@
           Register
         </mat-radio-button>
       </mat-radio-group>
-
+  <mat-card-content>
     <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
         <mat-form-field>
           <label for="userId">Username</label>
@@ -18,7 +18,12 @@
           <label for="pwhash">Password</label>
           <input matInput type="text" class="form-control" id="pwhash" required [(ngModel)]="model.pwhash" name="pwhash">
         </mat-form-field>
-
-      <button mat-raised-button color="primary" type="submit" class="btn btn-success">→</button>
+      <button mat-button type="submit" class="btn btn-success">→</button>
     </form>
+  </mat-card-content>
+  <button mat-button (click)="toggleIpSelect()">Change Server</button>
+  <mat-card-content *ngIf="displayIpSelector">
+    <app-select-ip></app-select-ip>
+  </mat-card-content>
+
 </mat-card>

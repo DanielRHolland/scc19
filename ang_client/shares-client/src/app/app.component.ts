@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiKeyService } from './api-key.service'
+import { IpService } from './ip.service'
 
 @Component({
   selector: 'app-root',
@@ -9,14 +10,18 @@ import { ApiKeyService } from './api-key.service'
 export class AppComponent {
   title = 'Shares Broker';
   apiKey;
-
-  constructor(private apiKeyService: ApiKeyService) {}
+  connectionInformation;
+  ip;
+  constructor(private apiKeyService: ApiKeyService, private ipService: IpService) {}
 
   
 
   ngOnInit() {
     this.apiKeyService.current.subscribe(apiKey => this.apiKey = apiKey);
+    this.ipService.sharesCurrent.subscribe(ip => this.ip = ip);
   }
 
-
+toggleConnectionInfo() {
+  this.connectionInformation = !this.connectionInformation;
+}
 }
