@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { SharesService } from '../shares.service';
 import { Purchase } from '../models/purchase.model';
-import { ApiKeyService } from '../api-key.service';
 import { RatesService } from '../rates.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { isNull } from 'util';
@@ -21,9 +20,9 @@ export class UserSharesComponent implements OnInit {
   orderBy = "default";
   searchTerms = "";
   count = 25;
+  symbolToRemove;
   constructor(private ratesService: RatesService,
      private sharesService: SharesService,
-      private apiKeyService: ApiKeyService,
       private _snackBar: MatSnackBar ) { }
 
   ngOnInit() 
@@ -58,6 +57,9 @@ export class UserSharesComponent implements OnInit {
           }
         }
       );
+      if (updatedSQ.quantity == 0) {
+        this.symbolToRemove = symbol;
+      }
     });
   }
 
@@ -116,6 +118,14 @@ export class UserSharesComponent implements OnInit {
 displayError(msg: string) {
   this._snackBar.open(msg, "Close", {
     duration: 5000,
+  });
+}
+
+deleteUserShare() {
+  let symbol = this.symbolToRemove;
+  this.sharesService.deleteUserShare(symbol).subscribe(data => {
+    this.displayError("Stopped tracking "+ symbol);
+    this.update();
   });
 }
 }

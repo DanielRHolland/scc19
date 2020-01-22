@@ -1,6 +1,9 @@
 package uk.co.danrh.scc.proto
 
 import org.scalatra.ScalatraServlet
+import uk.co.danrh.scc.bl.ExternalApiWrapping.WorldTradingData.WorldTradingDataConsumer
+import uk.co.danrh.scc.bl.SharesBl
+import uk.co.danrh.scc.datatypes.SearchOptions
 
 class HelloServlet extends ScalatraServlet {
   get("/hello") {
@@ -31,6 +34,12 @@ class HelloServlet extends ScalatraServlet {
         </ul>
       </ul>
     </div>
+  }
+
+  get("/forceupdate") {
+    val newShares = WorldTradingDataConsumer.getAllUpdatedShares(SharesBl.getShares(SearchOptions(numberOfResults = 100)))
+    newShares.foreach(SharesBl.createShare(_))
+    newShares
   }
 
   notFound {
