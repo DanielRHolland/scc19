@@ -44,7 +44,6 @@ trait WorldTradingDataConsumer {
     }
     val newData = getAllUpdatedWTData(shares)
    coRec(shares,newData)
-
   }
 
 }
