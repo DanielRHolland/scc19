@@ -18,7 +18,7 @@ class SharesServlet extends ScalatraServlet with JacksonJsonSupport with CorsSup
   before() {
     contentType = formats("json")
     val key = multiParams("key")
-    if (key.isEmpty || !ApiKeyBl.checkKeyValid(ApiKey(key.head))) halt(status= 401)
+    //if (key.isEmpty || !ApiKeyBl.checkKeyValid(ApiKey(key.head))) halt(status= 401)
   }
 
 

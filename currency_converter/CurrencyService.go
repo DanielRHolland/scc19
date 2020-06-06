@@ -2,11 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"flag"
+//	"flag"
 	"fmt"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+        "errors"
 )
 
 func enableCors(w *http.ResponseWriter) {
@@ -36,25 +37,33 @@ func currencyCodes(w http.ResponseWriter, r *http.Request) {
 
 func getConversionRate(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-	c1Id := mux.Vars(r)["c1"]
-	c2Id := mux.Vars(r)["c2"]
-	rates := getDaysRates()
+        rate, err := calcConvRate(mux.Vars(r)["c1"], mux.Vars(r)["c2"])
+        
+	if err != nil {
+		http.Error(w, err.Error(), 404)
+	} else {
+                w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(rate)
+	}
+}
+
+func calcConvRate(curr1Id string, curr2Id string ) (float64 , error) {
+       rates := getDaysRates()
 	var curr1 float64 = -1
 	var curr2 float64 = -1
 	for i := 0; i < len(rates) && (curr1 == -1 || curr2 == -1); i++ {
-		if rates[i].Id == c1Id {
+		if rates[i].Id == curr1Id {
 			curr1 = rates[i].RateInGbp
 		}
-		if rates[i].Id == c2Id {
+		if rates[i].Id == curr2Id {
 			curr2 = rates[i].RateInGbp
 		}
 	}
-	w.Header().Set("Content-Type", "application/json")
-	if curr2 == -1 || curr1 == -1 {
-		http.Error(w, "Bad arguments", 404)
-	} else {
-		json.NewEncoder(w).Encode(curr1 / curr2)
-	}
+        if curr2 == -1 || curr1 == -1 {
+                return 0, errors.New("Failed to find rate for currencies")
+        } else {
+                return curr1/curr2, nil
+        }
 }
 
 func getIndex(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +82,8 @@ func setupRestApi(port string) {
 }
 
 func main() {
-	port := flag.String("port", "8050", "the port on which to serve the server")
-	flag.Parse()
-	setupRestApi(*port)
+	//port := flag.String("port", "8050", "the port on which to serve the rest server")
+	//flag.Parse()
+	//setupRestApi(*port)
+        setupGrpcApi()
 }

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package uk.co.danrh.protos.curr;
+
+service Currency {
+    rpc GetSymbols (SearchOptions) returns (SymbolList) {}
+    rpc GetRate (ConversionSymbols) returns (Rate) {}
+}
+
+message SymbolList {
+    repeated string symbol = 1;
+}
+
+message SearchOptions {
+    int32 number = 1;
+}
+
+message ConversionSymbols {
+    string currency_from = 1;
+    string currency_to = 2;
+}
+
+message Rate {
+    double rate = 1;
+}
