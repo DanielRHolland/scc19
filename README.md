@@ -4,8 +4,7 @@ This repository contains the code from my SCC coursework, but it has been modifi
 the Scala Web Service to call the methods on the Golang one. This has been done purely because I wanted a test bed on which to try out gRPC,
 and this existing codebase seemed like not too bad a choice.
 
-The following is an extract from the report I wrote for the Service-Centric and Cloud Computing module of my Bachelor's Degree.
-It describes a system built for the coursework of that module. The system's purpose was to simulate the trading of shares,
+The following is an extract from the report I wrote for this project. The system's purpose is to simulate the trading of shares,
 and to log the shares owned by different users. The software was written to a specification which detailed the purpose of the system,
 but not specifics of implementation, which was left relatively open-ended. As such, I chose to use Scala/Scalatra/Slick,
 Go, and Angular - largely because I wanted to learn more about each of these.
